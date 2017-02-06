@@ -1,0 +1,315 @@
+/*
+ * styleViewer.css
+ */
+
+#cadViewer
+{
+    position:relative;
+    top:110px;
+    width: 1000px;
+    height: 620px;
+    display: block;
+
+    margin-left:auto;
+    margin-right:auto;
+}
+
+#viewerContext
+{
+    position: absolute;
+
+    margin: 0px;             /* not inherited */
+    border: 0px none black;  /* not inherited */
+    padding: 0px;            /* not inherited */
+
+    /* ensure that the canvas uses the whole width and height of the document */
+    background: white;
+
+    left:0px;
+    right:400px;
+    top: 0px;
+    height:480px;
+
+    border: thin solid lightgray;
+}
+
+canvas
+{
+    margin: 0px;            /* not inherited */
+    border: 0px none black; /* not inherited */
+    padding: 0px;           /* not inherited */
+
+    /* ensure that the canvas uses the whole width and height of the document */
+    height: 100%;
+    width: 100%;
+
+    cursor: crosshair;        /* show that we can change orientation of view */
+}
+
+#parametersdiv
+{
+    position:absolute;
+    top: 0px;
+    right:0px;
+    bottom:0px;
+    margin: 0px; /* not inherited */
+    border: thin solid lightgray;
+    border-radius: 0px;
+    padding: 10px;
+    background: white;
+    width: 370px;
+    height:600px;
+    overflow: auto;
+}
+
+#parametersdiv table
+{
+    margin-bottom: 5px;
+    vertical-align:middle;
+    text-align: left;
+    font-size: 0.8em;
+    font-weight: normal;
+    border:  0px solid green;
+}
+
+#parametersdiv th
+{
+    margin:  0px; /* not inherited */
+    margin-bottom: 10px;
+    border:  0px solid red; /* not inherited */
+    padding: 5px; /* not inherited */
+    background-color:lightgrey;
+    font-weight: bold;
+    text-align:center;
+    width: 370px;
+    border-radius: 0px;
+    border: 0px solid white;
+    height:25px;
+}
+
+#parametersdiv th.caption
+{
+    text-decoration: none;
+    font-size:14px;
+    color:black;
+}
+
+#parametersdiv td.caption
+{
+    text-align: left;
+    font-weight: normal;
+}
+
+#parametersdiv td
+{
+    margin:  0px; /* not inherited */
+    border:  0px solid black; /* not inherited */
+    padding: 5px; /* not inherited */
+    vertical-align:middle;
+}
+
+#parametersdiv textarea, #parametersdiv select
+{
+    font-size: 14px;
+    background: transparent;
+    border: thin solid lightgrey;
+    vertical-align:middle;
+    height:30px;
+    color:black;
+    margin: 0px;
+    width:100%;
+
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    border-radius: 0;
+    background-image: url(Viewer/imgs/down-arrow.png);
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: 20px;
+
+}
+
+
+#parametersdiv input[type="checkbox"]
+{
+    display:inline-block;
+    border: thick solid black;
+}
+
+
+#parametersdiv input[type="range"]
+{
+
+    background: transparent;
+    border: none;
+    vertical-align:middle;
+    height:30px;
+    color:black;
+    margin: 0px;
+    width: 88%;
+}
+
+#parametersdiv input[type="number"]
+{
+    font-size: 14px;
+    background: transparent;
+    border: thin solid lightgrey;
+    vertical-align:middle;
+    height:30px;
+    color:black;
+    margin: 0px;
+    width: 100%;
+}
+
+#parametersdiv label
+{
+    font-size: 14px;
+    background: transparent;
+    border: none;
+    vertical-align:middle;
+    height:30px;
+    color:black;
+    padding-left:10px;
+}
+
+
+#updatediv
+{
+    position:relative;
+    float:left;
+    /*bottom: 0px;
+    left:10px;*/
+    margin: 0px; /* not inherited */
+    padding: 0px;
+}
+
+#updateButton
+{
+     border:thin solid lightgray;
+
+    background-color: transparent;
+    color: black;
+
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    height:30px;
+    margin: 10px;
+}
+
+#updateButton:hover
+{
+    background-color: lightcoral;
+
+}
+
+#updatediv label
+{
+    color:black;
+    font-size: 14px;
+}
+
+#updatediv input[type="checkbox"]
+{
+
+}
+
+#statusdiv
+{
+    position: relative;
+    float:left;
+    /*bottom: 0px;
+    right: 0px;*/
+}
+
+#statusdiv button
+{
+    border:thin solid lightgray;
+
+    background-color: transparent;
+    color: black;
+
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    height:30px;
+    margin: 10px;
+}
+
+#statusdiv button:hover
+{
+    background-color: skyblue;
+}
+
+#statusdiv  select
+{
+    font-size: 14px;
+    background: transparent;
+    border: thin solid lightgray;
+
+    height:30px;
+    color:black;
+    margin: 0px;
+
+
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    border-radius: 0;
+    background-image: url(Viewer/imgs/down-arrow.png);
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: 20px;
+}
+
+#statusspan
+{
+    font-size:14px;
+    padding:10px;
+}
+
+#statusdiv a:link, a:visited
+{
+    display: inline-block;
+    border: thin solid lightgray;
+    height: 23px;
+
+    color: black;
+    margin: 10px;
+    padding-top: 5px;
+    text-align: center;
+
+    text-decoration: none;
+    font-size: 14px;
+}
+
+
+#statusdiv a:hover, a:active
+{
+    background-color: red;
+}
+
+#tail
+{
+    z-index: 4;
+    position: absolute;
+    bottom: -2px;
+    margin: 0px;
+    left:0px;
+    width:598px;
+    height: 129px;
+    border: thin solid lightgray;
+    background: white;
+}
+
+#busy
+{
+   vertical-align: middle;
+    height:30px;
+    margin:10px;
+}
