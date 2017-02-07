@@ -478,26 +478,28 @@ OpenJsCad.Processor.prototype =
 
         this.statusspan = document.createElement("span");
         this.statusspan.id = 'statusspan';
-        this.statusbuttons = document.createElement("span");
+
+        this.statusbuttons = document.createElement("div");
         this.statusbuttons.id = 'statusbuttons';
-        this.statusdiv.appendChild(this.statusspan);
+
+        this.statusdiv.parentElement.appendChild(this.statusspan);
         this.statusdiv.appendChild(this.statusbuttons);
+
         this.abortbutton = document.createElement("button");
         this.abortbutton.innerHTML = "Abort";
         this.abortbutton.onclick = function(e) {that.abort();};
-
         this.statusbuttons.appendChild(this.abortbutton);
-        this.formatDropdown = document.createElement("select");
 
+        this.formatDropdown = document.createElement("select");
         this.formatDropdown.onchange = function(e) {
             that.currentFormat = that.formatDropdown.options[that.formatDropdown.selectedIndex].value;
             that.updateDownloadLink();};
-
         this.statusbuttons.appendChild(this.formatDropdown);
+
         this.generateOutputFileButton = document.createElement("button");
         this.generateOutputFileButton.onclick = function(e) {that.generateOutputFile();};
-
         this.statusbuttons.appendChild(this.generateOutputFileButton);
+
         this.downloadOutputFileLink = document.createElement("a");
         this.downloadOutputFileLink.className = "downloadOutputFileLink"; // so we can css it
         this.statusbuttons.appendChild(this.downloadOutputFileLink);
