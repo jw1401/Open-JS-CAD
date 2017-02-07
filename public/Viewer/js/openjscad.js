@@ -3,13 +3,7 @@
 //   adapted by jw1401 as an Customiozation Engine for 3D Printing
 //
 // History:
-// 2016/10/01: 0.5.2: enhanced Processor constructor to support Viewer options
-//                    enhanced Processor to allow a selection from multiple returned objects
-// 2016/06/27: 0.5.1: incrementing version number for release
-// 2016/05/01: 0.5.0: added SVG import and export, added options to Processor and View classes, allow more flexibility in HTML by Z3 Dev
-// 2016/02/25: 0.4.0: GUI refactored, functionality split up into more files, mostly done by Z3 Dev
-// 2013/03/12: reenable webgui parameters to fit in current design
-// 2013/03/11: few changes to fit design of http://openjscad.org
+//
 
 (function(module)
 {
@@ -43,10 +37,12 @@ OpenJsCad.log = function(txt)
   else throw new Error("Cannot log");
 };
 
+//?????????????
+/*
 OpenJsCad.status = function(s)
 {
   OpenJsCad.log(s);
-}
+}*/
 
 OpenJsCad.env = function()
 {
@@ -65,318 +61,12 @@ OpenJsCad.env = function()
   }
   console.log(env);
 }
-/*
-OpenJsCad.Viewer = function(containerElm, size, options)
-{
-    // config stuff
-    // fg and bg colors
 
-    var defaultBgColor = [0.93, 0.93, 0.93];
-    var defaultMeshColor = [0, 0, 1];
-    var drawAxes = true;
-    var axLength = 110;
-    var gridLength = 100;
-    this.perspective = 45; // in degrees
-
-    this.drawOptions =
-        {
-            lines: options.drawLines,   // Draw black triangle lines ("wireframe")
-            faces: options.drawFaces    // Draw surfaces
-        };
-
-    // end config stuff
-
-    this.size = size;
-    this.defaultColor_ = options.color || defaultMeshColor;
-
-    // default is opaque if not defined otherwise
-    if (this.defaultColor_.length == 3)
-    {
-      this.defaultColor_.push(1);
-    }
-
-    this.bgColor_ = new THREE.Color();
-    this.bgColor_.setRGB.apply(this.bgColor_, options.bgColor || defaultBgColor);
-
-    // the elm to contain the canvas
-    this.containerElm_ = containerElm;
-
-    this.createScene(drawAxes, axLength, gridLength);
-    this.createCamera();
-    this.parseSizeParams();
-
-    // createRenderer will also call render
-    this.createRenderer(options.noWebGL);
-    this.animate();
-};
-
-OpenJsCad.Viewer.prototype =
-{
-    // adds axes too
-    createScene: function(drawAxes, axLen, gridLength)
-    {
-      var scene = new THREE.Scene();
-      this.scene_ = scene;
-
-      if (drawAxes)
-      {
-        this.drawAxes(axLen,gridLength);
-      }
-    },
-
-    createCamera: function()
-    {
-      var light = new THREE.PointLight();
-      light.position.set(0, 0, 0);
-
-      // aspect ration changes later - just a placeholder
-      var camera = new THREE.PerspectiveCamera(this.perspective, 1/1, 0.01, 1000000);
-      this.camera_ = camera;
-
-      camera.add(light);
-      camera.up.set(0, 0, 1);
-      this.scene_.add(camera);
-    },
-
-    createControls: function(canvas)
-    {
-      // controls. just change this line (and script include) to other threejs controls if desired
-      var controls = new THREE.OrbitControls(this.camera_, canvas);
-      this.controls_ = controls;
-
-      controls.noKeys = true;
-      controls.zoomSpeed = 0.5;
-      controls.noPan = true;
-      controls.target = new THREE.Vector3(0, 0, 0);
-
-      //controls.minPolarAngle = 0;
-      //controls.maxPolarAngle = Math.PI;
-
-      //controls.autoRotate = true;
-      controls.autoRotateSpeed = 1;
-
-      controls.addEventListener( 'change', this.render.bind(this));
-    },
-
-    webGLAvailable: function()
-    {
-        try
-        {
-            var canvas = document.createElement("canvas");
-            return !! (window.WebGLRenderingContext &&(canvas.getContext("webgl") ||canvas.getContext("experimental-webgl")));
-        }
-        catch(e)
-        {
-            return false;
-        }
-    },
-
-    createRenderer: function(bool_noWebGL)
-    {
-      var Renderer = this.webGLAvailable() && !bool_noWebGL ? THREE.WebGLRenderer : THREE.CanvasRenderer;
-
-      // we're creating new canvas on switching renderer, as same
-      // canvas doesn't tolerate moving from webgl to canvasrenderer
-      var renderer = new Renderer({precision: 'highp', antialias: true});
-      this.renderer_ = renderer;
-
-      if (this.canvas)
-      {
-        this.canvas.remove();
-      }
-      this.canvas = renderer.domElement;
-      this.containerElm_.appendChild(this.canvas);
-
-      renderer.setClearColor(this.bgColor_);
-
-      // and add controls
-      this.createControls(renderer.domElement);
-
-      // if coming in from contextrestore, enable rendering here
-      this.pauseRender_ = false;
-      this.handleResize();
-
-      // handling context lost
-      var this_ = this;
-
-      this.canvas.addEventListener("webglcontextlost", function(e) {
-          e.preventDefault();
-          this_.cancelAnimate();
-      }, false);
-
-      this.canvas.addEventListener("webglcontextrestored", function(e) {
-        this_.createRenderer(true);
-        this_.animate();
-        }, false);
-    },
-
-    render: function()
-    {
-      if (!this.pauseRender_)
-      {
-        this.renderer_.render(this.scene_, this.camera_);
-      }
-    },
-
-    animate: function()
-    {
-        this.requestID_ = requestAnimationFrame(this.animate.bind(this));
-        this.controls_.update();
-    },
-
-    cancelAnimate: function()
-    {
-        this.pauseRender_ = true;
-        cancelAnimationFrame(this.requestID_);
-    },
-
-
-
-
-    drawAxes: function(axLen,gridLength) // draws grid and axes
-    {
-        axLen = axLen || 1000;
-        gridLength = gridLength || 100;
-
-        var size = gridLength;
-        var divisions = 10;
-
-        var gridXY = new THREE.GridHelper( size, divisions);
-        gridXY.rotation.x = Math.PI/2;
-        //gridXY.position.set(50,50,0);
-        this.scene_.add( gridXY );
-
-        //axes
-        var axes = new THREE.AxisHelper(axLen);
-        this.scene_.add(axes);
-    },
-
-    setCsg: function(csg, resetZoom)
-    {
-        this.clear();
-        var res = THREE.CSG.fromCSG(csg, this.defaultColor_);
-
-        var colorMeshes = [].concat(res.colorMesh)
-          .map(function(mesh) {
-            mesh.userData = {faces: true};
-            return mesh;
-        });
-
-        var wireMesh = res.wireframe;
-        wireMesh.userData = {lines: true};
-
-        this.scene_.add.apply(this.scene_, colorMeshes);
-        this.scene_.add(wireMesh);
-
-        resetZoom && this.resetZoom(res.boundLen);
-        this.applyDrawOptions();
-    },
-
-    applyDrawOptions: function()
-    {
-        this.getUserMeshes('faces').forEach(function(faceMesh) {
-          faceMesh.visible = !!this.drawOptions.faces;
-        }, this);
-
-        this.getUserMeshes('lines').forEach(function(lineMesh) {
-          lineMesh.visible = !! this.drawOptions.lines;
-        }, this);
-
-        this.render();
-    },
-
-    clear: function()
-    {
-        this.scene_.remove.apply(this.scene_, this.getUserMeshes());
-    },
-
-    // gets the meshes created by setCsg
-    getUserMeshes: function(str)
-    {
-        return this.scene_.children.filter(function(ch) {
-          if (str) {
-            return ch.userData[str];
-          } else {
-            return ch.userData.lines || ch.userData.faces;
-          }
-        });
-    },
-
-    resetZoom: function(r)
-    {
-        if (!r)
-        {
-          // empty object - any default zoom
-          r = 10;
-        }
-
-        var d = r / Math.tan(this.perspective * Math.PI / 180);
-
-        // play here for different start zoom
-        this.camera_.position.set(d*2, d*2, d);
-        this.camera_.zoom = 1;
-        this.camera_.lookAt(this.scene_.position);
-        this.camera_.updateProjectionMatrix();
-    },
-
-    parseSizeParams: function() //looks if dynamic resize is needed, depends on size Params eg % // binds resize listener
-    {
-        // essentially, allow all relative + px. Not cm and such.
-        var winResizeUnits = ['%', 'vh', 'vw', 'vmax', 'vmin'];
-        var width, height;
-
-        if (!this.size.width)
-        {
-            this.size.width = this.size.widthDefault;
-        }
-
-        if (!this.size.height)
-        {
-            this.size.height = this.size.heightDefault;
-        }
-
-        var wUnit = this.size.width.match(/^(\d+(?:\.\d+)?)(.*)$/)[2];
-        var hUnit = typeof this.size.height == 'string' ? this.size.height.match(/^(\d+(?:\.\d+)?)(.*)$/)[2] : '';
-
-        // whether unit scales on win resize
-        var isDynUnit = winResizeUnits.indexOf(wUnit) != -1 || winResizeUnits.indexOf(hUnit) != -1;
-
-        // e.g if units are %, need to keep resizing canvas with dom
-        if (isDynUnit)
-        {
-            window.addEventListener('resize', this.handleResize.bind(this))
-        }
-    },
-
-    handleResize: function() //resizes dynamical if needed
-    {
-        var hIsRatio = typeof this.size.height != 'string';
-
-        // apply css, then check px size. This is in case css is not in px
-        this.canvas.style.width = this.size.width;
-
-        if (!hIsRatio)
-        {
-            this.canvas.style.height = this.size.height;
-        }
-
-        var widthInPx = this.canvas.clientWidth;
-        var heightInPx = hIsRatio ? widthInPx * this.size.height : this.canvas.clientHeight;
-
-        this.camera_.aspect = widthInPx/heightInPx;
-        this.camera_.updateProjectionMatrix();
-
-        // set canvas attributes (false => don't set css)
-        this.renderer_.setSize(widthInPx, heightInPx, false);
-        this.render();
-    }
-};
-*/
 
 ///////////////////////////////////////////////////////////////////////////////
 // this is a bit of a hack; doesn't properly supports urls that start with '/'
 // but does handle relative urls containing ../
-
+//
 OpenJsCad.makeAbsoluteUrl = function(url, baseurl)
 {
   if(!url.match(/^[a-z]+\:/i))
@@ -392,7 +82,8 @@ OpenJsCad.makeAbsoluteUrl = function(url, baseurl)
     var comps = basecomps.concat(urlcomps);
     var comps2 = [];
 
-    comps.map(function(c) {
+    comps.map(function(c)
+    {
       if(c == "..")
       {
         if(comps2.length > 0)
@@ -483,6 +174,7 @@ OpenJsCad.FileSystemApiErrorHandler = function(fileError, operation)
 };
 
 // Call this routine to install a handler for uncaught exceptions
+//
 OpenJsCad.AlertUserOfUncaughtExceptions = function()
 {
   window.onerror = function(message, url, line) {
@@ -527,7 +219,7 @@ OpenJsCad.AlertUserOfUncaughtExceptions = function()
   };
 };
 
-// parse the jscad script to get the parameter definitions
+// parse the jscad script to get the parameter definitions in the getParameterDefintions (returns array) Function in the jsCad File
 //
 OpenJsCad.getParamDefinitions = function(script)
 {
@@ -536,9 +228,7 @@ OpenJsCad.getParamDefinitions = function(script)
 
   try
   {
-    // first try to execute the script itself
-    // this will catch any syntax errors
-    // BUT we can't introduce any new function!!!
+    // first try to execute the script itself; this will catch any syntax errors
     (new Function(script))();
   }
   catch(e)
@@ -562,13 +252,16 @@ OpenJsCad.getParamDefinitions = function(script)
     }
   }
 
+  //returns the getParameterDefinitions array for ParametersDiv
   return params;
 };
 
 
 
-////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 //OpenJsCadProcessor
+//
+//
 //
 OpenJsCad.Processor = function(containerdiv, options, onchange)
 {
@@ -579,7 +272,7 @@ OpenJsCad.Processor = function(containerdiv, options, onchange)
   this.options = options = options || {};
 
   //????
-  this.onchange = onchange;
+  //this.onchange = onchange;
 
   //checks if options passed in by Constructor or not, if not then asign standard option
   // Draw black triangle lines ("wireframe")
@@ -614,21 +307,20 @@ OpenJsCad.Processor = function(containerdiv, options, onchange)
   this.paramControls = [];
   this.script = null;
   this.hasError = false;
-  this.debugging = false;
   this.formats = null;
 
 
-// the default options for processing
-  this.opts = {
-    debug: false,
+  // the default options for processing
+  this.opts =
+  {
     libraries: ['csg.js','formats.js','openjscad.js','openscad.js'],
-    openJsCadPath: '',
+    openJsCadPath: 'Viewer/js/',
     useAsync: true,
     useSync:  true,
   };
 
 
-// callbacks
+  // callbacks
   this.onchange = null;   // function(Processor) for callback
   this.ondownload = null; // function(Processor) for callback
 
@@ -641,7 +333,8 @@ OpenJsCad.Processor = function(containerdiv, options, onchange)
   this.baseurl = document.location.href;
   this.baseurl = this.baseurl.replace(/#.*$/,''); // remove remote URL
   this.baseurl = this.baseurl.replace(/\?.*$/,''); // remove parameters
-  if (this.baseurl.lastIndexOf('/') != (this.baseurl.length-1)) {
+  if (this.baseurl.lastIndexOf('/') != (this.baseurl.length-1))
+  {
     this.baseurl = this.baseurl.substring(0,this.baseurl.lastIndexOf('/')+1);
   }
 
@@ -650,12 +343,14 @@ OpenJsCad.Processor = function(containerdiv, options, onchange)
   // 1 - processing  - processing JSCAD script
   // 2 - complete    - completed processing
   // 3 - incomplete  - incompleted due to errors in processing
-  //
+
   this.state = 0;
 
   this.createElements();
 };
 
+// makes Objects ready to display with csg fixTJunctions
+//
 OpenJsCad.Processor.convertToSolid = function(objs)
 {
   if (objs.length === undefined)
@@ -695,6 +390,9 @@ OpenJsCad.Processor.convertToSolid = function(objs)
   return solid;
 };
 
+
+// Most functions are in here
+//
 OpenJsCad.Processor.prototype =
 {
 
@@ -746,7 +444,7 @@ OpenJsCad.Processor.prototype =
     //    --statusdiv
     //    --parametersdiv
     //    --ErrorDiv
-    //    --selectdiv????
+    //    --selectdiv ==> select the Range of objects to display
     //
     createElements: function()
     {
@@ -955,6 +653,8 @@ OpenJsCad.Processor.prototype =
         return filename;
     },
 
+    // sets the current Objects to display, updates the view, the Formats and the downloadLinkTextForCurrentObject
+    //
     setCurrentObjects: function(objs)
     {
         if (!(length in objs))
@@ -985,35 +685,18 @@ OpenJsCad.Processor.prototype =
         return this.formatInfo(this.selectedFormat());
     },
 
+    // updates the text in the Generate Output File button
+    //
     updateDownloadLink: function()
     {
         var info = this.selectedFormatInfo();
         var ext = info.extension;
-        this.generateOutputFileButton.innerHTML = "Generate "+ext.toUpperCase();
+        this.generateOutputFileButton.innerHTML = "Generate " + ext.toUpperCase();
     },
 
-    /*clearViewer: function()
-    {
-        this.clearOutputFile();
-        this.setRenderedObjects(null);
-        this.hasValidCurrentObject = false;
-        this.enableItems();
-    },*/
-
-    /*abort: function()
-    {
-        if(this.processing)
-        {
-            //todo: abort
-            this.processing=false;
-            this.statusspan.innerHTML = "Aborted.";
-            this.worker.terminate();
-            this.enableItems();
-            if(this.onchange) this.onchange();
-        }
-    },*/
-
-
+    //saves nummbers of 3D objects
+    //in hidden Range Element in HTML
+    //
     updateSelection: function()
     {
         var range = document.getElementById("startRange");
@@ -1026,8 +709,11 @@ OpenJsCad.Processor.prototype =
         range.value = this.currentObjects.length - 1;
     },
 
+    // updates the view based on the selected objects
+    //
     updateView: function()
     {
+        // get parameters from selectdiv slides
         var startpoint = parseInt(document.getElementById("startRange").value);
         var endpoint = parseInt(document.getElementById("endRange").value);
         if (startpoint == this.selectStartPoint && endpoint == this.selectEndPoint) { return; }
@@ -1038,10 +724,14 @@ OpenJsCad.Processor.prototype =
 
         if (startpoint > endpoint) { startpoint = this.selectEndPoint; endpoint = this.selectStartPoint; };
 
+        //selects the Elements to render based on the selct div function
         var objs = this.currentObjects.slice(startpoint,endpoint+1);
 
-        this.viewedObject = OpenJsCad.Processor.convertToSolid(objs); // enforce CSG to display
+        // enforce CSG to display ==> important function convertToSolid()
+        //
+        this.viewedObject = OpenJsCad.Processor.convertToSolid(objs);
 
+        //determines if this is first rendering; if true the reset zoom
         this.isFirstRender_ = typeof this.isFirstRender_ == 'undefined' ? true : false;
 
         // (re-)set zoom only on very first rendering action
@@ -1050,10 +740,13 @@ OpenJsCad.Processor.prototype =
 
         if(this.viewer)
         {
+            //sets the viewer and displays objects
             this.viewer.setCsg(this.viewedObject);
         }
     },
 
+    // updates the Format DropDown list
+    //
     updateFormats: function()
     {
         while(this.formatDropdown.options.length > 0)
@@ -1065,14 +758,18 @@ OpenJsCad.Processor.prototype =
 
         var formats = this.supportedFormatsForCurrentObjects();
 
-        formats.forEach(function(format) {
+        formats.forEach(function(format)
+        {
             var option = document.createElement("option");
             var info = that.formatInfo(format);
             option.setAttribute("value", format);
             option.appendChild(document.createTextNode(info.displayName));
-            that.formatDropdown.options.add(option);});
+            that.formatDropdown.options.add(option);
+        });
     },
 
+    // clears the Viewer and the Output File
+    //
     clearViewer: function()
     {
         this.clearOutputFile();
@@ -1087,13 +784,15 @@ OpenJsCad.Processor.prototype =
         this.enableItems();
     },
 
+    // aborts the build process and rendering
+    //
     abort: function()
     {
         // abort if state is processing
         if(this.state == 1)
         {
             //todo: abort
-            this.setStatus("Aborted ");
+            this.setStatus("Aborted <img id=busy src='Viewer/imgs/aborted.png'>");
             this.worker.terminate();
             this.state = 3; // incomplete
             this.enableItems();
@@ -1101,11 +800,11 @@ OpenJsCad.Processor.prototype =
         }
     },
 
-    //controls the visibility of the elemnts created by createElements()
+    // controls the visibility of the elemnts created by createElements()
     //
     enableItems: function()
     {
-        this.abortbutton.style.display = (this.state == 1) ? "inline":"none";
+        this.abortbutton.style.display = (this.state == 1) ? "inline-block":"none";
         this.formatDropdown.style.display = ((!this.hasOutputFile)&&(this.viewedObject))? "inline":"none";
         this.generateOutputFileButton.style.display = ((!this.hasOutputFile)&&(this.viewedObject))? "inline":"none";
         this.downloadOutputFileLink.style.display = this.hasOutputFile? "inline-block":"none";
@@ -1115,16 +814,15 @@ OpenJsCad.Processor.prototype =
         this.selectdiv.style.display = (this.currentObjects.length > 1) ? "inline-block":"inline-block"; // FIXME once there's a data model
     },
 
-    setDebugging: function(debugging)
-    {
-        this.opts.debug = debugging;
-    },
-
+    // adds libraries to this.opts Object
+    //
     addLibrary: function(lib)
     {
         this.opts['libraries'].push(lib);
     },
 
+    // set Path for libraries
+    //
     setOpenJsCadPath: function(path)
     {
         this.opts['openJsCadPath'] = path;
@@ -1152,20 +850,22 @@ OpenJsCad.Processor.prototype =
         }
     },
 
-    /*setDebugging: function(debugging)
-    {
-        this.debugging = debugging;
-    },*/
+    //////////////////////////////////////////////////////
+    //Setting up the Model and the Parameters starts here
+    //
+    //
+    //
+    //
 
-
-//Setting up the Model and the Parameters starts here
-//
     // script: javascript code
     // filename: optional, the name of the .jscad file
     //
     setJsCad: function(script, filename)
     {
+        //check if file otherwise set to openjscad.jscad
         if(!filename) filename = "openjscad.jscad";
+
+        //init everything needed
         this.abort();
         this.clearViewer();
         this.paramDefinitions = [];
@@ -1176,7 +876,11 @@ OpenJsCad.Processor.prototype =
 
         try
         {
+            //get Parameters Definition in jscad file
             this.paramDefinitions = OpenJsCad.getParamDefinitions(script);
+
+            //create the parameter Controls out of params[] array which is returned by getParamDefinitions() function
+            //params[] array is pointing to this.paramDefinitions
             this.createParamControls();
         }
         catch(e)
@@ -1188,6 +892,7 @@ OpenJsCad.Processor.prototype =
 
         if(!scripthaserrors)
         {
+            // if everithing OK call function rebuildSolid()
             this.script = script;
             this.filename = filename;
             this.rebuildSolid();
@@ -1199,11 +904,14 @@ OpenJsCad.Processor.prototype =
         }
     },
 
-
+    // Get the Parameter Values in the jsCad File
+    //
     getParamValues: function()
     {
-
         var paramValues = {};
+
+        //iterates through the paramControls Arry generated by createParamControls() function
+        //
         for(var i = 0; i < this.paramControls.length; i++)
         {
             var control = this.paramControls[i];
@@ -1213,17 +921,14 @@ OpenJsCad.Processor.prototype =
                 case 'choice':
 
                     paramValues[control.paramName] = control.options[control.selectedIndex].value;
-
                     break;
 
                 case 'float':
-
                 case 'number':
 
                     var value = control.value;
 
                     if (!isNaN(parseFloat(value)) && isFinite(value))
-
                     {
                         paramValues[control.paramName] = parseFloat(value);
                     }
@@ -1231,7 +936,6 @@ OpenJsCad.Processor.prototype =
                     {
                         throw new Error("Parameter ("+control.paramName+") is not a valid number ("+value+")");
                     }
-
                     break;
 
                 case 'int':
@@ -1245,11 +949,9 @@ OpenJsCad.Processor.prototype =
                     {
                         throw new Error("Parameter ("+control.paramName+") is not a valid number ("+value+")");
                     }
-
                     break;
 
                 case 'checkbox':
-
                 case 'radio':
 
                     if (control.checked == true && control.value.length > 0)
@@ -1265,18 +967,17 @@ OpenJsCad.Processor.prototype =
                 default:
 
                     paramValues[control.paramName] = control.value;
-
                     break;
 
             }
-
-            //console.log(control.paramName+":"+paramValues[control.paramName]);
         }
 
+        // retunrs the paramValues Object allen control Values
         return paramValues;
     },
 
-
+    // adds something to the jsCad script and i dont know what it does
+    //
     getFullScript: function()
     {
         var script = "";
@@ -1302,12 +1003,17 @@ OpenJsCad.Processor.prototype =
         return script;
     },
 
-
+    // starts an worker Thread an rbuilds solid Asnyc
+    //
     rebuildSolidAsync: function()
     {
+        //get all Parameter Values stored in parameters Object with names from jsCad File
         var parameters = this.getParamValues();
+
+        // returns jsCad Script with gMemFs?????
         var script     = this.getFullScript();
 
+        //checks if multithreading worker is supported
         if(!window.Worker) throw new Error("Worker threads are unsupported.");
 
         // create the worker
@@ -1315,39 +1021,45 @@ OpenJsCad.Processor.prototype =
         that.state = 1; // processing
         that.worker = OpenJsCad.createJscadWorker( this.baseurl+this.filename, script,
             // handle the results
-            function(err, objs) {
-            that.worker = null;
-            if(err)
+            function(err, objs)
             {
+              that.worker = null;
+
+              if(err)
+              {
                 that.setError(err);
                 that.setStatus("Error ");
                 that.state = 3; // incomplete
-            }
-            else
-            {
-                //that.setRenderedObjects(objs);
+              }
+              else
+              {
                 that.setCurrentObjects(objs);
-            that.setStatus("Ready ");
-            that.state = 2; // complete
-            }
+                that.setStatus("Ready ");
+                that.state = 2; // complete
+              }
 
-            that.enableItems();});
+              that.enableItems();
+            });
 
 
         // pass the libraries to the worker for import
-        var libraries = this.opts.libraries.map( function(l) {return this.baseurl+'Viewer/js/'+this.opts.openJsCadPath+l;}, this);
+        var libraries = this.opts.libraries.map( function(l) {return this.baseurl + this.opts.openJsCadPath + l;}, this);
 
         // start the worker
         that.worker.postMessage({cmd: "render", parameters: parameters, libraries: libraries});
+        that.enableItems();
     },
 
-
+    // rebuilds solid sync; everything in browser window tab is blocking until process finished
+    //
     rebuildSolidSync: function()
     {
         var parameters = this.getParamValues();
         try
         {
             this.state = 1; // processing
+
+            // calls jscad-function.js createJscadFunction() ==> returns the function with jsCad Script
             var func = OpenJsCad.createJscadFunction(this.baseurl+this.filename, this.script);
             var objs = func(parameters);
             this.setCurrentObjects(objs);
@@ -1365,8 +1077,8 @@ OpenJsCad.Processor.prototype =
         this.enableItems();
     },
 
-    //rebuild Solid is triggered by setJsCad()
-    //it also decides if rebuild is async or sync as entered in options
+    // rebuild Solid is triggered by setJsCad()
+    // it also decides on bool if rebuild should be async or sync as entered in options
     //
     rebuildSolid: function()
     {
@@ -1377,7 +1089,7 @@ OpenJsCad.Processor.prototype =
         this.enableItems();
         this.setStatus("Rendering. Please wait <img id=busy src='Viewer/imgs/busy.gif'>");
 
-        // rebuild the solid
+        // rebuild the solid Async
         if (this.opts.useAsync)
         {
             try
@@ -1398,7 +1110,7 @@ OpenJsCad.Processor.prototype =
                 }
             }
         }
-
+        //rebuild the solid Sync
         if (this.opts.useSync)
         {
             this.rebuildSolidSync();
@@ -1406,13 +1118,12 @@ OpenJsCad.Processor.prototype =
     },
 
 
-    getState: function()
-    {
-        return this.state;
-    },
-
-//File Generation and download happen here
-//
+    ///////////////////////////////////////////////////////////////////////
+    //File Generation and download happen here
+    //
+    //
+    //
+    //
     clearOutputFile: function()
     {
         if(this.hasOutputFile)
@@ -1435,7 +1146,6 @@ OpenJsCad.Processor.prototype =
         }
     },
 
-
     generateOutputFile: function()
     {
         this.clearOutputFile();
@@ -1455,7 +1165,6 @@ OpenJsCad.Processor.prototype =
         }
     },
 
-
     currentObjectsToBlob: function()
     {
         var startpoint = this.selectStartPoint;
@@ -1466,7 +1175,6 @@ OpenJsCad.Processor.prototype =
 
         return this.convertToBlob(objs,this.selectedFormat());
     },
-
 
     convertToBlob: function(objs,format)
     {
@@ -1526,7 +1234,7 @@ OpenJsCad.Processor.prototype =
 
             case 'amf':
 
-                blob = object.toAMFString({producer: "OpenJSCAD.org "+OpenJsCad.version,date: new Date()});
+                blob = object.toAMFString({producer: "OpenJSCAD.org " + OpenJsCad.version,date: new Date()});
                 blob = new Blob([blob],{ type: formatInfo.mimetype });
                 break;
 
@@ -1564,7 +1272,6 @@ OpenJsCad.Processor.prototype =
         return blob;
 
     },
-
 
     supportedFormatsForCurrentObjects: function()
     {
@@ -1606,7 +1313,6 @@ OpenJsCad.Processor.prototype =
         return objectFormats;
     },
 
-
     formatInfo: function(format)
     {
 
@@ -1628,13 +1334,11 @@ OpenJsCad.Processor.prototype =
         return this.formats[format];
     },
 
-
     downloadLinkTextForCurrentObject: function()
     {
         var ext = this.selectedFormatInfo().extension;
-        return "Download "+ext.toUpperCase();
+        return "Download " + ext.toUpperCase();
     },
-
 
     generateOutputFileBlobUrl: function()
     {
@@ -1662,8 +1366,6 @@ OpenJsCad.Processor.prototype =
                     that.enableItems();
                 }
             };
-
-
             reader.readAsDataURL(blob);
 
         }
@@ -1688,7 +1390,6 @@ OpenJsCad.Processor.prototype =
             this.enableItems();
         }
     },
-
 
     generateOutputFileFileSystem: function()
     {
@@ -1756,8 +1457,12 @@ OpenJsCad.Processor.prototype =
 
     },
 
-//Control Creation for Parameters starts here
-//
+    ///////////////////////////////////////////////////////////
+    // Control Creation for Parameters starts here
+    //
+    //
+    //
+    //
     createGroupControl: function(definition)
     {
         var control = document.createElement("title");
@@ -1776,7 +1481,6 @@ OpenJsCad.Processor.prototype =
 
         return control;
     },
-
 
     createChoiceControl: function(definition)
     {
@@ -1837,7 +1541,6 @@ OpenJsCad.Processor.prototype =
 
         return control;
     },
-
 
     createControl: function(definition)
     {
@@ -1963,8 +1666,7 @@ OpenJsCad.Processor.prototype =
 
     },
 
-
-    //Creates the Parameter Controls for parametersdiv
+    // Creates the Parameter Controls for parametersdiv
     //
     createParamControls: function()
     {
@@ -2075,6 +1777,9 @@ OpenJsCad.Processor.prototype =
 
     },
 
+
+
+//End of Module
 };
 
 })(this);

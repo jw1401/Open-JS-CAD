@@ -12,8 +12,10 @@ function loadProcessor()
                                                 drawFaces: true,
                                             });
 
-      loadJSCAD(0);
 
+      loadJSCAD(0);
+      OpenJsCad.env();
+      OpenJsCad.AlertUserOfUncaughtExceptions();
 }
 
 
@@ -32,6 +34,7 @@ function loadJSCAD(choice)
         if(filepath.match(/\.jscad$/i)||filepath.match(/\.js$/i))
         {
           gProcessor.setStatus("Processing "+filepath+" <img id=busy src='Viewer/imgs/busy.gif'>");
+          //gProcessor.setOpenJsCadPath('Viewer/js/');// set for library path
           gProcessor.setJsCad(source,filepath);
 
             //gProcessor.opts.useAsync=true;
