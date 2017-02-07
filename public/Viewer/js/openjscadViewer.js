@@ -182,9 +182,6 @@ OpenJsCadViewer.Viewer.prototype =
         cancelAnimationFrame(this.requestID_);
     },
 
-
-
-
     drawAxes: function(axLen,gridLength) // draws grid and axes
     {
         axLen = axLen || 1000;

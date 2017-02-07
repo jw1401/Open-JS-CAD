@@ -5,7 +5,7 @@
 #cadViewer
 {
     position:relative;
-    top:110px;
+    top:10px;
     width: 1000px;
     height: 620px;
     display: block;
@@ -271,7 +271,7 @@ canvas
 {
     font-size:14px;
     padding:10px;
-    
+
 }
 
 #statusdiv a:link, a:visited

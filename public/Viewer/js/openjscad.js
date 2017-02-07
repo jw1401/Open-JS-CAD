@@ -37,13 +37,6 @@ OpenJsCad.log = function(txt)
   else throw new Error("Cannot log");
 };
 
-//?????????????
-/*
-OpenJsCad.status = function(s)
-{
-  OpenJsCad.log(s);
-}*/
-
 OpenJsCad.env = function()
 {
   var env = "OpenJSCAD "+OpenJsCad.version;
@@ -62,7 +55,7 @@ OpenJsCad.env = function()
   console.log(env);
 }
 
-
+/*
 ///////////////////////////////////////////////////////////////////////////////
 // this is a bit of a hack; doesn't properly supports urls that start with '/'
 // but does handle relative urls containing ../
@@ -105,7 +98,7 @@ OpenJsCad.makeAbsoluteUrl = function(url, baseurl)
     }
   }
   return url;
-};
+};*/
 
 OpenJsCad.isChrome = function()
 {
@@ -124,6 +117,7 @@ OpenJsCad.getWindowURL = function()
   else throw new Error("Your browser doesn't support window.URL");
 };
 
+/*
 OpenJsCad.textToBlobUrl = function(txt)
 {
   var windowURL=OpenJsCad.getWindowURL();
@@ -131,7 +125,7 @@ OpenJsCad.textToBlobUrl = function(txt)
   var blobURL = windowURL.createObjectURL(blob);
   if(!blobURL) throw new Error("createObjectURL() failed");
   return blobURL;
-};
+};*/
 
 OpenJsCad.revokeBlobUrl = function(url)
 {
@@ -263,43 +257,37 @@ OpenJsCad.getParamDefinitions = function(script)
 //
 //
 //
-OpenJsCad.Processor = function(containerdiv, options, onchange)
+OpenJsCad.Processor = function(containerdiv, viewerOptions, onchange)
 {
   //pass in div which contains viewerContext
   this.containerdiv = containerdiv;
 
   //initialize Options and pass in options if available or generate empty options Object
-  this.options = options = options || {};
-
-  //????
-  //this.onchange = onchange;
+  this.viewerOptions = viewerOptions = viewerOptions || {};
 
   //checks if options passed in by Constructor or not, if not then asign standard option
   // Draw black triangle lines ("wireframe")
-  this.options.drawLines = !!this.cleanOption(options.drawLines, false);
+  this.viewerOptions.drawLines = !!this.cleanOption(viewerOptions.drawLines, false);
   // Draw surfaces
-  this.options.drawFaces = !!this.cleanOption(options.drawFaces, true);
+  this.viewerOptions.drawFaces = !!this.cleanOption(viewerOptions.drawFaces, true);
   // verbose output
-  this.options.verbose = !!this.cleanOption(options.verbose, true);
-
-  // default applies unless sizes specified in options
-  this.widthDefault = "800px";
-  this.heightDefault = "600px";
+  this.viewerOptions.verbose = !!this.cleanOption(viewerOptions.verbose, true);
 
   this.viewerdiv = null;
   this.viewer = null;
 
+  //sets the viewer size; if no viewerOptions are assigned the default size applies
   this.viewerSize =
   {
-    widthDefault: this.widthDefault,
-    heightDefault: this.heightDefault,
-    width: this.options.viewerwidth,
-    height: this.options.viewerheight,
-    heightratio: this.options.viewerheightratio
+    widthDefault: "800px",
+    heightDefault: "600px",
+    width: this.viewerOptions.viewerwidth,
+    height: this.viewerOptions.viewerheight,
+    heightratio: this.viewerOptions.viewerheightratio
   };
 
-  this.processing = false;
-  this.currentObject = null;
+  //this.processing = false;
+  //this.currentObject = null;
   this.hasValidCurrentObject = false;
   this.hasOutputFile = false;
   this.worker = null;
@@ -309,16 +297,14 @@ OpenJsCad.Processor = function(containerdiv, options, onchange)
   this.hasError = false;
   this.formats = null;
 
-
   // the default options for processing
-  this.opts =
+  this.processOpts =
   {
     libraries: ['csg.js','formats.js','openjscad.js','openscad.js'],
     openJsCadPath: 'Viewer/js/',
     useAsync: true,
     useSync:  true,
   };
-
 
   // callbacks
   this.onchange = null;   // function(Processor) for callback
@@ -327,12 +313,10 @@ OpenJsCad.Processor = function(containerdiv, options, onchange)
   this.currentObjects = [];  // list of objects returned from rebuildObject*
   this.viewedObject = null;  // the object being rendered
 
-  this.selectStartPoint = 0;
-  this.selectEndPoint = 0;
-
   this.baseurl = document.location.href;
   this.baseurl = this.baseurl.replace(/#.*$/,''); // remove remote URL
   this.baseurl = this.baseurl.replace(/\?.*$/,''); // remove parameters
+
   if (this.baseurl.lastIndexOf('/') != (this.baseurl.length-1))
   {
     this.baseurl = this.baseurl.substring(0,this.baseurl.lastIndexOf('/')+1);
@@ -362,7 +346,7 @@ OpenJsCad.Processor.convertToSolid = function(objs)
     }
     else
     {
-      throw new Error("Cannot convert object ("+typeof(objs)+") to solid");
+      throw new Error("Cannot convert object ("+ typeof(objs) +") to solid");
     }
   }
 
@@ -374,7 +358,8 @@ OpenJsCad.Processor.convertToSolid = function(objs)
 
     if (obj instanceof CAG)
     {
-      obj = obj.extrude({offset: [0,0,0.1]}); // convert CAG to a thin solid CSG
+      // convert CAG to a thin solid CSG
+      obj = obj.extrude({offset: [0,0,0.1]});
     }
 
     if (solid !== null)
@@ -386,7 +371,6 @@ OpenJsCad.Processor.convertToSolid = function(objs)
       solid = obj;
     }
   }
-
   return solid;
 };
 
@@ -428,12 +412,6 @@ OpenJsCad.Processor.prototype =
         this.viewer.applyDrawOptions(); // calls the OpenJsCadViewer.applyDrawOptions function
     },
 
-    handleResize: function()
-    {
-        this.viewer && (this.viewer.handleResize());
-    },
-
-
     //is called from OpenJsCad.processor
     //
     //this creates
@@ -444,75 +422,35 @@ OpenJsCad.Processor.prototype =
     //    --statusdiv
     //    --parametersdiv
     //    --ErrorDiv
-    //    --selectdiv ==> select the Range of objects to display
     //
     createElements: function()
     {
         var that = this;   // for event handlers
 
+        // removes all childs
         while(this.containerdiv.children.length > 0)
         {
             this.containerdiv.removeChild(this.containerdiv.firstChild);
         }
 
+        // creates the viewerDiv
         var viewerdiv = document.createElement("div");
         viewerdiv.className = "viewer";
         viewerdiv.style.width = '100%';
         viewerdiv.style.height = '100%';
         this.containerdiv.appendChild(viewerdiv);
 
+        // creates the Viewer and is assigned to viewerdiv
         try
         {
-            this.viewer = new OpenJsCadViewer.Viewer(viewerdiv,this.viewerSize, this.options);//this.opts.viewer);
+            this.viewer = new OpenJsCadViewer.Viewer(viewerdiv, this.viewerSize, this.viewerOptions);
         }
         catch(e)
         {
             viewerdiv.innerHTML = "<b><br><br>Error: " + e.toString() + "</b><br><br>A browser with support for WebGL is required";
         }
 
-
-        this.selectdiv = this.containerdiv.parentElement.querySelector("div#selectdiv");
-        if (!this.selectdiv)
-        {
-            this.selectdiv = document.createElement("div");
-            this.selectdiv.id = 'selectdiv';
-            this.containerdiv.parentElement.appendChild(this.selectdiv);
-        }
-
-        element = document.createElement("input");
-        element.setAttribute("type", "range");
-        element.id = 'startRange';
-        element.min = 0;
-        element.max = 100;
-        element.step = 1;
-        element.oninput = function(e) {
-            if( that.state == 2 )
-            {
-                that.updateView();
-                that.updateFormats();
-                that.updateDownloadLink();
-            }};
-
-        this.selectdiv.appendChild(element);
-
-        element = document.createElement("input");
-        element.setAttribute("type", "range");
-        element.id = 'endRange';
-        element.min = 0;
-        element.max = 100;
-        element.step = 1;
-        element.oninput = function(e) {
-
-            if( that.state == 2 )
-            {
-                that.updateView();
-                that.updateFormats();
-                that.updateDownloadLink();
-            }};
-
-        this.selectdiv.appendChild(element);
-
-        ////////ErrorDiv
+        // creates the ErrorDiv
         this.errordiv = this.containerdiv.parentElement.querySelector("div#errordiv");
         if (!this.errordiv)
         {
@@ -524,13 +462,11 @@ OpenJsCad.Processor.prototype =
         this.errorpre = document.createElement("pre");
         this.errordiv.appendChild(this.errorpre);
 
-        ////////StatusDiv
+        // creates the StatusDiv
         this.statusdiv = this.containerdiv.parentElement.querySelector("div#statusdiv");
         while (this.statusdiv.hasChildNodes())
         {
-
             this.statusdiv.removeChild(this.statusdiv.lastChild);
-
         }
 
         if (!this.statusdiv)
@@ -566,13 +502,11 @@ OpenJsCad.Processor.prototype =
         this.downloadOutputFileLink.className = "downloadOutputFileLink"; // so we can css it
         this.statusbuttons.appendChild(this.downloadOutputFileLink);
 
-        ////////ParametersDiv
+        // creates the ParametersDiv
         this.parametersdiv = this.containerdiv.parentElement.querySelector("div#parametersdiv");
         while (this.parametersdiv.hasChildNodes())
         {
-
             this.parametersdiv.removeChild(this.parametersdiv.lastChild);
-
         }
 
         if (!this.parametersdiv)
@@ -582,13 +516,11 @@ OpenJsCad.Processor.prototype =
             this.containerdiv.parentElement.appendChild(this.parametersdiv);
         }
 
-        ////////UpdateDiv
+        // creates the UpdateDiv
         this.updatediv = this.containerdiv.parentElement.querySelector("div#updatediv");
         while (this.updatediv.hasChildNodes())
         {
-
             this.updatediv.removeChild(this.updatediv.lastChild);
-
         }
 
         if (!this.updatediv)
@@ -622,16 +554,19 @@ OpenJsCad.Processor.prototype =
 
         this.updatediv.appendChild(element);
 
-        //ParametersTable is filled by createParamControls
+        // create ParametersTable which is filled by createParamControls
         this.parameterstable = document.createElement("table");
         this.parameterstable.className = "parameterstable";
         this.parametersdiv.appendChild(this.parameterstable);
 
+        // shows the items depending on cases
         this.enableItems();
 
+        //clears the viewer
         this.clearViewer();
     },
 
+    /*
     getFilenameForRenderedObject: function()
     {
         var filename = this.filename;
@@ -651,7 +586,7 @@ OpenJsCad.Processor.prototype =
             }
         }
         return filename;
-    },
+    },*/
 
     // sets the current Objects to display, updates the view, the Formats and the downloadLinkTextForCurrentObject
     //
@@ -663,10 +598,6 @@ OpenJsCad.Processor.prototype =
         }
 
         this.currentObjects = objs;  // list of CAG or CSG objects
-
-        this.updateSelection();
-
-        this.selectStartPoint = -1; // force view update
 
         this.updateView();
         this.updateFormats();
@@ -694,38 +625,14 @@ OpenJsCad.Processor.prototype =
         this.generateOutputFileButton.innerHTML = "Generate " + ext.toUpperCase();
     },
 
-    //saves nummbers of 3D objects
-    //in hidden Range Element in HTML
-    //
-    updateSelection: function()
-    {
-        var range = document.getElementById("startRange");
-        range.min = 0;
-        range.max = this.currentObjects.length - 1;
-        range.value = 0;
-        range = document.getElementById("endRange");
-        range.min = 0;
-        range.max = this.currentObjects.length - 1;
-        range.value = this.currentObjects.length - 1;
-    },
+
 
     // updates the view based on the selected objects
     //
     updateView: function()
     {
-        // get parameters from selectdiv slides
-        var startpoint = parseInt(document.getElementById("startRange").value);
-        var endpoint = parseInt(document.getElementById("endRange").value);
-        if (startpoint == this.selectStartPoint && endpoint == this.selectEndPoint) { return; }
-
-        // build a list of objects to view
-        this.selectStartPoint = startpoint;
-        this.selectEndPoint   = endpoint;
-
-        if (startpoint > endpoint) { startpoint = this.selectEndPoint; endpoint = this.selectStartPoint; };
-
-        //selects the Elements to render based on the selct div function
-        var objs = this.currentObjects.slice(startpoint,endpoint+1);
+        //get all objects
+        var objs = this.currentObjects;
 
         // enforce CSG to display ==> important function convertToSolid()
         //
@@ -811,21 +718,20 @@ OpenJsCad.Processor.prototype =
         this.parametersdiv.style.display = (this.paramControls.length > 0)? "inline-block":"none";     // was 'block'
         this.errordiv.style.display = this.hasError? "block":"none";
         this.statusdiv.style.display = this.hasError? "none":"block";
-        this.selectdiv.style.display = (this.currentObjects.length > 1) ? "inline-block":"inline-block"; // FIXME once there's a data model
     },
 
     // adds libraries to this.opts Object
     //
     addLibrary: function(lib)
     {
-        this.opts['libraries'].push(lib);
+        this.processOpts['libraries'].push(lib);
     },
 
     // set Path for libraries
     //
     setOpenJsCadPath: function(path)
     {
-        this.opts['openJsCadPath'] = path;
+        this.processOpts['openJsCadPath'] = path;
     },
 
     setError: function(txt)
@@ -1043,7 +949,7 @@ OpenJsCad.Processor.prototype =
 
 
         // pass the libraries to the worker for import
-        var libraries = this.opts.libraries.map( function(l) {return this.baseurl + this.opts.openJsCadPath + l;}, this);
+        var libraries = this.processOpts.libraries.map( function(l) {return this.baseurl + this.processOpts.openJsCadPath + l;}, this);
 
         // start the worker
         that.worker.postMessage({cmd: "render", parameters: parameters, libraries: libraries});
@@ -1090,7 +996,7 @@ OpenJsCad.Processor.prototype =
         this.setStatus("Rendering. Please wait <img id=busy src='Viewer/imgs/busy.gif'>");
 
         // rebuild the solid Async
-        if (this.opts.useAsync)
+        if (this.processOpts.useAsync)
         {
             try
             {
@@ -1099,7 +1005,7 @@ OpenJsCad.Processor.prototype =
             }
             catch(err)
             {
-                if (! this.opts.useSync)
+                if (! this.processOpts.useSync)
                 {
                     var errtxt = err.toString();
                     if(err.stack) {errtxt += '\nStack trace:\n'+err.stack;}
@@ -1111,10 +1017,13 @@ OpenJsCad.Processor.prototype =
             }
         }
         //rebuild the solid Sync
-        if (this.opts.useSync)
+        if (this.processOpts.useSync)
         {
             this.rebuildSolidSync();
         }
+
+
+
     },
 
 
@@ -1167,11 +1076,9 @@ OpenJsCad.Processor.prototype =
 
     currentObjectsToBlob: function()
     {
-        var startpoint = this.selectStartPoint;
-        var endpoint   = this.selectEndPoint;
-        if (startpoint > endpoint) { startpoint = this.selectEndPoint; endpoint = this.selectStartPoint; };
 
-        var objs = this.currentObjects.slice(startpoint,endpoint+1);
+
+        var objs = this.currentObjects;
 
         return this.convertToBlob(objs,this.selectedFormat());
     },
@@ -1275,11 +1182,9 @@ OpenJsCad.Processor.prototype =
 
     supportedFormatsForCurrentObjects: function()
     {
-        var startpoint = this.selectStartPoint;
-        var endpoint   = this.selectEndPoint;
-        if (startpoint > endpoint) { startpoint = this.selectEndPoint; endpoint = this.selectStartPoint; };
 
-        var objs = this.currentObjects.slice(startpoint,endpoint+1);
+
+        var objs = this.currentObjects;
 
         this.formatInfo("stla"); // make sure the formats are initialized
 

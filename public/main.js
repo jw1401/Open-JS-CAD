@@ -8,14 +8,27 @@ function loadProcessor()
                                            {
                                                 viewerwidth: '100%',
                                                 viewerheight: '100%',
-                                                drawLines: true,
+                                                drawLines: false,
                                                 drawFaces: true,
                                             });
 
 
       loadJSCAD(0);
+
       OpenJsCad.env();
       OpenJsCad.AlertUserOfUncaughtExceptions();
+
+      $('#toggle').on("click", function(){
+        console.log("toggle");
+        gProcessor.toggleDrawOption('lines');
+
+      });
+
+      $('#toggleFaces').on("click", function(){
+        console.log("toggleFaces");
+
+        gProcessor.toggleDrawOption('faces');
+      });
 }
 
 
@@ -40,6 +53,7 @@ function loadJSCAD(choice)
             //gProcessor.opts.useAsync=true;
             //gProcessor.options.drawLines = false;
             //gProcessor.updateView();
+
         }
       }
       xhr.send();
