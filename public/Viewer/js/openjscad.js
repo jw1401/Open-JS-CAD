@@ -679,6 +679,13 @@ OpenJsCad.Processor.prototype =
             option.setAttribute("value", format);
             option.appendChild(document.createTextNode(info.displayName));
             that.formatDropdown.options.add(option);
+
+            var button = document.createElement("button");
+            button.innerHTML = info.displayName;
+            button.onclick = function(e) {that.generateOutputFile();};
+            this.statusbuttons.appendChild(button);
+
+
         });
     },
 
@@ -1317,7 +1324,7 @@ OpenJsCad.Processor.prototype =
 
         var extension = this.selectedFormatInfo().extension;
         var dirname = "OpenJsCadOutput1_"+parseInt(Math.random()*1000000000, 10)+"_"+extension;
-        var filename = "output."+extension; // FIXME this should come from this.filename
+        var filename = "forYou."+extension; // FIXME this should come from this.filename
         var that = this;
 
         request(TEMPORARY, 20*1024*1024, function(fs){
