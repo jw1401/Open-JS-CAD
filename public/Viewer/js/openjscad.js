@@ -463,7 +463,7 @@ OpenJsCad.Processor.prototype =
         this.errordiv.appendChild(this.errorpre);
 
         // creates the StatusDiv
-        this.statusdiv = this.containerdiv.parentElement.querySelector("div#statusdiv");
+        this.statusdiv = document.querySelector("div#statusdiv");
 
         /*
         while (this.statusdiv.hasChildNodes())
@@ -507,11 +507,12 @@ OpenJsCad.Processor.prototype =
         this.statusbuttons.appendChild(this.downloadOutputFileLink);
 
         // creates the ParametersDiv
-        this.parametersdiv = this.containerdiv.parentElement.querySelector("div#parametersdiv");
-        while (this.parametersdiv.hasChildNodes())
+        this.parametersdiv = document.querySelector("div#parametersdiv");
+
+        /*while (this.parametersdiv.hasChildNodes())
         {
             this.parametersdiv.removeChild(this.parametersdiv.lastChild);
-        }
+        }*/
 
         if (!this.parametersdiv)
         {
@@ -521,7 +522,7 @@ OpenJsCad.Processor.prototype =
         }
 
         // creates the UpdateDiv
-        this.updatediv = this.containerdiv.parentElement.querySelector("div#updatediv");
+        this.updatediv = document.querySelector("div#updatediv");
 
 /*
         while (this.updatediv.hasChildNodes())

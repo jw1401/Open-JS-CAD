@@ -1,6 +1,6 @@
 var gProcessor = null;        // required by OpenJScad.org
 
-var gComponents = [ { file: '../examples/celtic-knot-ring.jscad' } ];
+var gComponents = [ { file: '../examples/box.jscad' } ];
 
 function loadProcessor()
 {
@@ -39,10 +39,10 @@ function loadProcessor()
           $('#updatediv').hide();
         }
         else $('#updatediv').show();
-
-
       });
 
+      resize();
+      $(window).resize(function(){resize();});
 }
 
 
@@ -63,12 +63,15 @@ function loadJSCAD(choice)
           gProcessor.setStatus("Processing "+filepath+" <img id=busy src='Viewer/imgs/busy.gif'>");
           //gProcessor.setOpenJsCadPath('Viewer/js/');// set for library path
           gProcessor.setJsCad(source,filepath);
-
-            //gProcessor.opts.useAsync=true;
-            //gProcessor.options.drawLines = false;
-            //gProcessor.updateView();
-
         }
       }
       xhr.send();
+}
+
+function resize()
+{
+  var height = $('#columnBig').height();
+  console.log(height);
+  $('#columnSmall').height(height);
+  console.log($('#columnSmall').height());
 }
