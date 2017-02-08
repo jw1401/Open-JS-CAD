@@ -7,18 +7,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!--load the main.js entry point-->
     <script src="main.js"></script>
 
+    <!--load stylesheets-->
     <link rel="stylesheet" href="normalize.css">
     <link href="styleViewer.css" rel="stylesheet" />
+  <!--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
+    <!--load jQuery-->
+    <script src="Viewer/jquery/jquery-3.1.1.min.js"></script>
+    <script src="Viewer/jquery/jquery-ui.min.js"></script>
 
-    <script src="Viewer/jquery/jquery-1.9.1.js"></script>
-    <!--
-    <script src="Viewer/jquery/jquery-1.9.1.js?0.5.2"></script>
-    <script src="Viewer/jquery/jquery.hammer.js?0.5.2"></script>
-    <script src="Viewer/jquery/jquery-ui.js"></script>
--->
+    <!--load openjscad-->
     <script src="Viewer/js/csg.js?0.5.2"></script>
     <script src="Viewer/js/formats.js?0.5.2"></script>
 
@@ -29,13 +31,14 @@
     <script src="Viewer/js/jscad-worker.js?0.5.2" charset="utf-8"></script>
     <script src="Viewer/js/jscad-function.js?0.5.2" charset="utf-8"></script>
 
+    <!--load THREE js-->
     <script src="Viewer/lib/three.min.js"></script>
     <script src="Viewer/lib/orbitcontrols.js"></script>
-
-    <!-- fallback if no WebGL -->
+    <!-- fallback for THREE js if no WebGL -->
     <script src="Viewer/lib/projector.js"></script>
     <script src="Viewer/lib/canvasrenderer.js"></script>
 
+    <!--THREE js wrapper Library for openjscad-->
     <script src="Viewer/js/threecsg.js"></script>
 
 </head>
@@ -44,16 +47,29 @@
 
     <!-- The Cad Page-->
     <div class = "cad page">
+
         <div id="cadViewer" >
+
             <div oncontextmenu="return false;" id="viewerContext"></div>
-            <div id="parametersdiv" style="display: block;"></div>
-            <div id="tail" style="display: block;">
-                <div id="statusdiv"></div>
-                <div id="updatediv"></div>
-                <div id="selectdiv"></div>
-                <button id="toggle" style="display:inline-block;bottom:0px;position:relative;">Toggle Lines</button>
-                <button id="toggleFaces" style="display:inline-block;bottom:0px;position:relative;">Toggle Faces</button>
+
+            <div id="pWrapper">
+              <div id="parametersdiv"></div>
             </div>
+
+            <div id="tail" >
+              <div id="statusdiv">
+                <button id="showToolbar" style="margin-left:0px;">Show Toolbar</button>
+
+              </div>
+
+            </div>
+
+            <div id="updatediv">
+              <i class="material-icons" >reorder</i>
+              <button id="toggleLines" >Toggle Lines</button>
+              <button id="toggleFaces">Toggle Faces</button>
+            </div>
+
         </div>
 
     </div>

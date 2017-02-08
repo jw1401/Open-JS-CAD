@@ -1,6 +1,6 @@
 var gProcessor = null;        // required by OpenJScad.org
 
-var gComponents = [ { file: '../examples/box.jscad' } ];
+var gComponents = [ { file: '../examples/celtic-knot-ring.jscad' } ];
 
 function loadProcessor()
 {
@@ -18,8 +18,8 @@ function loadProcessor()
       OpenJsCad.env();
       OpenJsCad.AlertUserOfUncaughtExceptions();
 
-      $('#toggle').on("click", function(){
-        console.log("toggle");
+      $('#toggleLines').on("click", function(){
+        console.log("toggle-lines");
         gProcessor.toggleDrawOption('lines');
 
       });
@@ -29,6 +29,20 @@ function loadProcessor()
 
         gProcessor.toggleDrawOption('faces');
       });
+
+      $('#updatediv').draggable();
+
+      $('#showToolbar').on("click",function(){
+        console.log($('#updatediv').is(':visible'));
+        if($('#updatediv').is(':visible'))
+        {
+          $('#updatediv').hide();
+        }
+        else $('#updatediv').show();
+
+
+      });
+
 }
 
 

@@ -117,7 +117,7 @@ OpenJsCad.getWindowURL = function()
   else throw new Error("Your browser doesn't support window.URL");
 };
 
-/*
+
 OpenJsCad.textToBlobUrl = function(txt)
 {
   var windowURL=OpenJsCad.getWindowURL();
@@ -125,7 +125,7 @@ OpenJsCad.textToBlobUrl = function(txt)
   var blobURL = windowURL.createObjectURL(blob);
   if(!blobURL) throw new Error("createObjectURL() failed");
   return blobURL;
-};*/
+};
 
 OpenJsCad.revokeBlobUrl = function(url)
 {
@@ -464,10 +464,12 @@ OpenJsCad.Processor.prototype =
 
         // creates the StatusDiv
         this.statusdiv = this.containerdiv.parentElement.querySelector("div#statusdiv");
+
+        /*
         while (this.statusdiv.hasChildNodes())
         {
             this.statusdiv.removeChild(this.statusdiv.lastChild);
-        }
+        }*/
 
         if (!this.statusdiv)
         {
@@ -476,7 +478,7 @@ OpenJsCad.Processor.prototype =
             this.containerdiv.parentElement.appendChild(this.statusdiv);
         }
 
-        this.statusspan = document.createElement("span");
+        this.statusspan = document.createElement("div");
         this.statusspan.id = 'statusspan';
 
         this.statusbuttons = document.createElement("div");
@@ -520,6 +522,8 @@ OpenJsCad.Processor.prototype =
 
         // creates the UpdateDiv
         this.updatediv = this.containerdiv.parentElement.querySelector("div#updatediv");
+
+/*
         while (this.updatediv.hasChildNodes())
         {
             this.updatediv.removeChild(this.updatediv.lastChild);
@@ -530,7 +534,7 @@ OpenJsCad.Processor.prototype =
             this.updatediv = document.createElement("div");
             this.updatediv.id = "updatediv";
             this.containerdiv.parentElement.appendChild(this.updatediv);
-        }
+        }*/
 
         element = document.createElement("button");
         element.innerHTML = "Update";
@@ -942,7 +946,7 @@ OpenJsCad.Processor.prototype =
               else
               {
                 that.setCurrentObjects(objs);
-                that.setStatus("Ready ");
+                that.setStatus("Ready <img id=busy src='Viewer/imgs/ready.png'>");
                 that.state = 2; // complete
               }
 
@@ -971,7 +975,7 @@ OpenJsCad.Processor.prototype =
             var func = OpenJsCad.createJscadFunction(this.baseurl+this.filename, this.script);
             var objs = func(parameters);
             this.setCurrentObjects(objs);
-            this.setStatus("Ready ");
+            this.setStatus("Ready <img id=busy src='Viewer/imgs/ready.png'>");
             this.state = 2; // complete
         }
         catch(err)
