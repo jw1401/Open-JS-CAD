@@ -30,15 +30,15 @@ function loadProcessor()
         gProcessor.toggleDrawOption('faces');
       });
 
-      $('#updatediv').draggable();
+      $('#draggable-update-div').draggable();
 
       $('#showToolbar').on("click",function(){
         //console.log($('#updatediv').is(':visible'));
-        if($('#updatediv').is(':visible'))
+        if($('#draggable-update-div').is(':visible'))
         {
-          $('#updatediv').hide();
+          $('#draggable-update-div').hide();
         }
-        else $('#updatediv').show();
+        else $('#draggable-update-div').show();
       });
 
       resize();

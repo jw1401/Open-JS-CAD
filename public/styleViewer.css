@@ -21,9 +21,9 @@
     /* ensure that the canvas uses the whole width and height of the document */
     background: white;
     width:100%;
-    height:600px;
+    height:500px;
     border: thin solid lightgray;
-    border-radius: 8px;
+    border-radius: 2px;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;
 }
 
@@ -32,10 +32,10 @@
   #viewerContext
   {
       width:100%;
-      height:400px;
+      height:350px;
   }
 
-  #updatediv{display: none};
+  #draggable-update-div{display: none};
 
   body{}
 
@@ -56,7 +56,7 @@ canvas
     margin: 0px;            /* not inherited */
     border: none;           /* not inherited */
     padding: 0px;           /* not inherited */
-    border-radius: 8px;
+    border-radius: 2px;
     /* ensure that the canvas uses the whole width and height of the document */
     height: 100%;
     width: 100%;
@@ -69,7 +69,7 @@ canvas
   margin: 0px; /* not inherited */
   padding: 5px;
   border: thin solid lightgray;
-  border-radius: 8px;
+  border-radius: 2px;
   background: white;
   width:100%;
   height:100%;
@@ -213,59 +213,13 @@ canvas
 /*Update Div Region*/
 #updatediv
 {
-    position:absolute;
-    top:0px;
-    float:left;
-    margin: 15px; /* not inherited */
-    padding: 5px;
-    border: none;
-    border-radius: 4px;
-    background-color: white;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;
-    z-index: 999;
-    width: 400px;
-    line-height: 0px;
+
+
 }
 
-#updatediv i
-{
-  vertical-align:middle !important;
-  font-size:18px;
-  color:lightgray;
-  margin:0px;
-}
 
-#updatediv button
-{
-  position: relative;
-  border:none;
-  background-color: dodgerblue;
-  color:white;
-  border-radius: 3px;
-  margin-right: 5px;
-  font-size: 12px;
-  height:30px;
-  height:20px;
-}
 
-#updatediv button:hover
-{
-  background-color: Deepskyblue;
-}
-#updatediv #updateButton
-{
-  background-color: darkmagenta;
-}
 
-#updatediv #updateButton:hover
-{
-  background-color: hotpink;
-}
-
-#updateButton:hover
-{
-    background-color: lightcoral;
-}
 
 #updatediv label
 {
@@ -283,34 +237,13 @@ canvas
 
 #statusdiv
 {
-    position: relative;
-    float:left;
-    margin-left: 0px;
+    padding:10px;
 }
 
 #statusbuttons
 {
   float:left;
-  vertical-align: middle;
-}
-#statusdiv button
-{
-    float:left;
-    position: relative;
-    border:none;
-    background-color: dodgerblue;
-    color:white;
-    border-radius: 4px;
-    margin-right: 5px;
-    font-size: 14px;
-    height:30px;
-    margin: 10px;
-
-}
-
-#statusdiv button:hover
-{
-    background-color: skyblue;
+  margin-left: 10px;
 }
 
 #statusdiv  select
@@ -333,51 +266,26 @@ canvas
 
 #statusspan
 {
-    float:left;
+    float:right;
     font-size:14px;
-    margin-left: 10px;
-}
-
-#statusdiv a:link, a:visited
-{
-    display: inline-block;
-    border: none;
-    height: 30px;
-    background-color: darkmagenta;
-    color: white;
-    margin: 10px;
-    padding-top: 5px;
-    padding-left:5px;
-    padding-right: 5px;
-    text-align: center;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 14px;
+    
+    margin-top: 2px;
+    width:100%
 }
 
 
-#statusdiv a:hover, a:active
-{
-    background-color: hotpink;
-    color: white;
-}
 
 #tail
 {
-    z-index: 4;
-    position: relative;;
-    float:left;
-    margin: 0px;
-    width:100%;
     border: thin solid lightgray;
     background: white;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;
-    border-radius: 8px;
+    border-radius: 2px;
 }
 
 #busy
 {
    vertical-align: middle;
     height:30px;
-    margin:10px;
+
 }

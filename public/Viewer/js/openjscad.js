@@ -313,6 +313,8 @@ OpenJsCad.Processor = function(containerdiv, viewerOptions, onchange)
   this.currentObjects = [];  // list of objects returned from rebuildObject*
   this.viewedObject = null;  // the object being rendered
 
+  this.currentFormat = "stla";
+
   this.baseurl = document.location.href;
   this.baseurl = this.baseurl.replace(/#.*$/,''); // remove remote URL
   this.baseurl = this.baseurl.replace(/\?.*$/,''); // remove parameters
@@ -478,33 +480,46 @@ OpenJsCad.Processor.prototype =
             this.containerdiv.parentElement.appendChild(this.statusdiv);
         }
 
+        /*this.abortbutton = document.createElement("button");
+        this.abortbutton.className = "btn btn-danger";
+        this.abortbutton.innerHTML = "Abort";*/
+
+        this.abortbutton = document.querySelector("#abort");
+        this.abortbutton.onclick = function(e) {that.abort();};
+        this.statusdiv.appendChild(this.abortbutton);
+        //this.statusdiv.parentElement.appendChild(document.createTextNode(" "));
+
         this.statusspan = document.createElement("div");
         this.statusspan.id = 'statusspan';
 
         this.statusbuttons = document.createElement("div");
         this.statusbuttons.id = 'statusbuttons';
 
-        this.statusdiv.parentElement.appendChild(this.statusspan);
+        //this.statusdiv.appendChild(this.statusspan);
         this.statusdiv.appendChild(this.statusbuttons);
 
-        this.abortbutton = document.createElement("button");
-        this.abortbutton.innerHTML = "Abort";
-        this.abortbutton.onclick = function(e) {that.abort();};
-        this.statusbuttons.appendChild(this.abortbutton);
 
+
+        /*
         this.formatDropdown = document.createElement("select");
         this.formatDropdown.onchange = function(e) {
-            that.currentFormat = that.formatDropdown.options[that.formatDropdown.selectedIndex].value;
+
+            //that.currentFormat = that.formatDropdown.options[that.formatDropdown.selectedIndex].value;
+
             that.updateDownloadLink();};
-        this.statusbuttons.appendChild(this.formatDropdown);
+        this.statusdiv.appendChild(this.formatDropdown);
+        this.statusdiv.appendChild(document.createTextNode(" "));
 
         this.generateOutputFileButton = document.createElement("button");
+        this.generateOutputFileButton.className ="btn btn-warning";
         this.generateOutputFileButton.onclick = function(e) {that.generateOutputFile();};
-        this.statusbuttons.appendChild(this.generateOutputFileButton);
+        this.statusdiv.appendChild(this.generateOutputFileButton);
+        this.statusdiv.appendChild(document.createTextNode(" "));*/
 
         this.downloadOutputFileLink = document.createElement("a");
-        this.downloadOutputFileLink.className = "downloadOutputFileLink"; // so we can css it
-        this.statusbuttons.appendChild(this.downloadOutputFileLink);
+        this.downloadOutputFileLink.className = "btn btn-warning"; // so we can css it
+        this.statusdiv.appendChild(this.downloadOutputFileLink);
+        this.statusdiv.appendChild(document.createTextNode(" "));
 
         // creates the ParametersDiv
         this.parametersdiv = document.querySelector("div#parametersdiv");
@@ -523,7 +538,7 @@ OpenJsCad.Processor.prototype =
 
         // creates the UpdateDiv
         this.updatediv = document.querySelector("div#updatediv");
-
+        this.updatediv.appendChild(this.statusspan);
 /*
         while (this.updatediv.hasChildNodes())
         {
@@ -537,18 +552,21 @@ OpenJsCad.Processor.prototype =
             this.containerdiv.parentElement.appendChild(this.updatediv);
         }*/
 
-        element = document.createElement("button");
-        element.innerHTML = "Update";
-        element.id = "updateButton";
-        element.onclick = function(e) {that.rebuildSolid();};
+        //element = document.createElement("button");
+        //element.innerHTML = "Update";
+        //element.id = "updateButton";
+        //element.className="btn btn-default";
 
-        this.updatediv.appendChild(element);
+        this.updateButton = document.querySelector("#update")
+        this.updateButton.onclick = function(e) {that.rebuildSolid();};
+        //element.style="float:right";
+        //this.statusdiv.appendChild(element);
 
         var instantUpdateCheckbox = document.createElement("input");
         instantUpdateCheckbox.type = "checkbox";
         instantUpdateCheckbox.id = "instantUpdate";
         instantUpdateCheckbox.checked = true;
-        this.updatediv.appendChild(instantUpdateCheckbox);
+        this.statusdiv.appendChild(instantUpdateCheckbox);
 
         element = document.getElementById("instantUpdateLabel");
         if (element === null)
@@ -559,7 +577,7 @@ OpenJsCad.Processor.prototype =
         }
         element.setAttribute("for",instantUpdateCheckbox.id);
 
-        this.updatediv.appendChild(element);
+        this.statusdiv.appendChild(element);
 
         // create ParametersTable which is filled by createParamControls
         this.parameterstable = document.createElement("table");
@@ -615,7 +633,9 @@ OpenJsCad.Processor.prototype =
 
     selectedFormat: function()
     {
-        return this.formatDropdown.options[this.formatDropdown.selectedIndex].value;
+        console.log('Current Format in selected Format ' + this.currentFormat);
+        //return this.formatDropdown.options[this.formatDropdown.selectedIndex].value;
+        return this.currentFormat
     },
 
     selectedFormatInfo: function()
@@ -629,7 +649,7 @@ OpenJsCad.Processor.prototype =
     {
         var info = this.selectedFormatInfo();
         var ext = info.extension;
-        this.generateOutputFileButton.innerHTML = "Generate " + ext.toUpperCase();
+        //this.generateOutputFileButton.innerHTML = "Generate " + ext.toUpperCase();
     },
 
 
@@ -663,9 +683,14 @@ OpenJsCad.Processor.prototype =
     //
     updateFormats: function()
     {
-        while(this.formatDropdown.options.length > 0)
+        /*while(this.formatDropdown.options.length > 0)
         {
             this.formatDropdown.options.remove(0);
+        }*/
+
+        while (this.statusbuttons.hasChildNodes())
+        {
+            this.statusbuttons.removeChild(this.statusbuttons.lastChild);
         }
 
         var that = this;
@@ -674,16 +699,25 @@ OpenJsCad.Processor.prototype =
 
         formats.forEach(function(format)
         {
-            var option = document.createElement("option");
+
             var info = that.formatInfo(format);
+
+            /* var option = document.createElement("option");
             option.setAttribute("value", format);
             option.appendChild(document.createTextNode(info.displayName));
-            that.formatDropdown.options.add(option);
+            that.formatDropdown.options.add(option);*/
 
             var button = document.createElement("button");
+            button.setAttribute("value",format);
             button.innerHTML = info.displayName;
-            button.onclick = function(e) {that.generateOutputFile();};
+            button.className="btn btn-success";
+            button.onclick = function(e) {
+              that.currentFormat = button.value.toString();
+              console.log(that.currentFormat);
+              that.generateOutputFile();};
+
             this.statusbuttons.appendChild(button);
+            this.statusbuttons.appendChild(document.createTextNode(" "));
 
 
         });
@@ -726,9 +760,9 @@ OpenJsCad.Processor.prototype =
     enableItems: function()
     {
         this.abortbutton.style.display = (this.state == 1) ? "inline-block":"none";
-        this.formatDropdown.style.display = ((!this.hasOutputFile)&&(this.viewedObject))? "inline":"none";
-        this.generateOutputFileButton.style.display = ((!this.hasOutputFile)&&(this.viewedObject))? "inline":"none";
-        this.downloadOutputFileLink.style.display = this.hasOutputFile? "inline-block":"none";
+        //this.formatDropdown.style.display = ((!this.hasOutputFile)&&(this.viewedObject))? "inline":"none";
+        //this.generateOutputFileButton.style.display = ((!this.hasOutputFile)&&(this.viewedObject))? "inline":"none";
+        this.downloadOutputFileLink.style.display = this.hasOutputFile? "none":"none";
         this.parametersdiv.style.display = (this.paramControls.length > 0)? "inline-block":"none";     // was 'block'
         this.errordiv.style.display = this.hasError? "block":"none";
         this.statusdiv.style.display = this.hasError? "none":"block";
@@ -1047,6 +1081,9 @@ OpenJsCad.Processor.prototype =
     //
     //
     //
+
+    // clears the Output File
+    //
     clearOutputFile: function()
     {
         if(this.hasOutputFile)
@@ -1069,6 +1106,9 @@ OpenJsCad.Processor.prototype =
         }
     },
 
+    // entry Point for File Generation that can be downloaded
+    // is called by the clicked Download Button
+    //
     generateOutputFile: function()
     {
         this.clearOutputFile();
@@ -1077,7 +1117,8 @@ OpenJsCad.Processor.prototype =
         {
             try
             {
-                this.generateOutputFileFileSystem();
+                //this.generateOutputFileFileSystem();
+                this.generateOutputFileBlobUrl();
             }
             catch(e)
             {
@@ -1088,15 +1129,16 @@ OpenJsCad.Processor.prototype =
         }
     },
 
+    //triggers the convertToBlob function with the relevant Objects and the formats
+    //
     currentObjectsToBlob: function()
     {
-
-
         var objs = this.currentObjects;
-
         return this.convertToBlob(objs,this.selectedFormat());
     },
 
+    //makes the blob Data for File Download based on selected Format and currentObjects
+    //
     convertToBlob: function(objs,format)
     {
         var formatInfo = this.formatInfo(format);
@@ -1194,6 +1236,8 @@ OpenJsCad.Processor.prototype =
 
     },
 
+    // returns the supported Format of the current display objects
+    //
     supportedFormatsForCurrentObjects: function()
     {
 
@@ -1232,6 +1276,8 @@ OpenJsCad.Processor.prototype =
         return objectFormats;
     },
 
+    // hold all he Format Infos
+    //
     formatInfo: function(format)
     {
 
@@ -1253,14 +1299,20 @@ OpenJsCad.Processor.prototype =
         return this.formats[format];
     },
 
+    //here the Text for the Download Link is set
+    //
     downloadLinkTextForCurrentObject: function()
     {
         var ext = this.selectedFormatInfo().extension;
         return "Download " + ext.toUpperCase();
     },
 
+    // File is prepared for downlaod via URI
+    //
     generateOutputFileBlobUrl: function()
     {
+        var fileName = "forYou.";
+
         if (OpenJsCad.isSafari())
         {
             //console.log("Trying download via DATA URI");
@@ -1279,17 +1331,17 @@ OpenJsCad.Processor.prototype =
                     that.downloadOutputFileLink.innerHTML = that.downloadLinkTextForCurrentObject();
 
                     var ext = that.selectedFormatInfo().extension;
-                    that.downloadOutputFileLink.setAttribute("download","openjscad."+ext);
+                    that.downloadOutputFileLink.setAttribute("download",fileName + ext);
                     that.downloadOutputFileLink.setAttribute("target", "_blank");
 
                     that.enableItems();
+                    that.downloadOutputFileLink.click();
                 }
             };
             reader.readAsDataURL(blob);
-
-        }
-        else
-        {
+          }
+          else
+          {
             //console.log("Trying download via BLOB URL");
             // convert BLOB to BLOB URL (HTML5 Standard)
             var blob = this.currentObjectsToBlob();
@@ -1304,10 +1356,11 @@ OpenJsCad.Processor.prototype =
             this.downloadOutputFileLink.innerHTML = this.downloadLinkTextForCurrentObject();
 
             var ext = this.selectedFormatInfo().extension;
-            this.downloadOutputFileLink.setAttribute("download", "openjscad."+ext);
+            this.downloadOutputFileLink.setAttribute("download", fileName + ext);
 
             this.enableItems();
-        }
+            this.downloadOutputFileLink.click();
+          }
     },
 
     generateOutputFileFileSystem: function()
@@ -1316,15 +1369,15 @@ OpenJsCad.Processor.prototype =
 
         if(!request)
         {
-            throw new Error("Your browser does not support the HTML5 FileSystem API. Please try the Chrome browser instead.");
+            console.log("Your browser does not support the HTML5 FileSystem API. Please try the Chrome browser instead.");
         }
 
-        //console.log("Trying download via FileSystem API");
+        console.log("Trying download via FileSystem API");
         // create a random directory name:
 
         var extension = this.selectedFormatInfo().extension;
         var dirname = "OpenJsCadOutput1_"+parseInt(Math.random()*1000000000, 10)+"_"+extension;
-        var filename = "forYou."+extension; // FIXME this should come from this.filename
+        var filename = "forYou."+ extension; // FIXME this should come from this.filename
         var that = this;
 
         request(TEMPORARY, 20*1024*1024, function(fs){
