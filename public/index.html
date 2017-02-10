@@ -10,17 +10,22 @@
     <!--load the main.js entry point-->
     <script src="main.js"></script>
 
+    <!--load jQuery-->
+    <script src="Viewer/jquery/jquery-3.1.1.min.js"></script>
+    <script src="Viewer/jquery/jquery-ui.min.js"></script>
+    <script src="Viewer/jquery/js/perfect-scrollbar.jquery.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
     <!--load stylesheets-->
     <!--<link rel="stylesheet" href="normalize.css">-->
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="Viewer/jquery/jquery-3.1.1.min.js"></script>
+
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="styleViewer.css" rel="stylesheet" />
+    <link href="Viewer/jquery/css/perfect-scrollbar.css" rel="stylesheet">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
-    <!--load jQuery-->
-
-    <script src="Viewer/jquery/jquery-ui.min.js"></script>
 
     <!--load openjscad-->
     <script src="Viewer/js/csg.js?0.5.2"></script>
@@ -66,7 +71,6 @@
     <!-- The Cad Page-->
     <div class="row">
         <div id="columnBig" class="col-sm-8" style="padding:5px;">
-
           <div  id="draggable-update-div" class="panel-group" style="width:250px;z-index:999;position:absolute;">
               <div class="panel panel-default">
                 <div id="updatediv" class="panel-body" style="text-align:center">
@@ -74,45 +78,41 @@
                 </div>
               </div>
           </div>
-
           <div oncontextmenu="return false;" id="viewerContext"></div>
-
         </div>
 
         <div id="columnSmall"class="col-sm-4" style="padding:5px;">
           <div id="pWrapper">
-            <div id="parametersdiv"></div>
+            <div id="parametersdiv" >
+            </div>
           </div>
         </div>
-
     </div>
 
     <div class="row">
           <div class="col-sm-12" style="padding:5px;">
             <div  id="tail" >
                     <div id="statusdiv" class="panel-body">
-
-
-                      <div class="dropdown" style="float:left;margin-right:10px">
+                      <div id="xyz">
+                      <div class="dropdown" style="float:left">
                         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                          <span class="glyphicon glyphicon-cog"> </span><span class="caret"></span></button>
+                          <span class="glyphicon glyphicon-cog">&nbsp</span><span class="caret"></span></button>
                           <ul class="dropdown-menu">
-                            <li><a id="toggleLines" href="#">Toggle Lines</a></li>
-                            <li><a id="toggleFaces" href="#">Toggle Faces</a></li>
-                            <li><a href="#">Update</a></li>
+                            <li><a id="toggleLines" >Toggle Lines</a></li>
+                            <li><a id="toggleFaces" >Toggle Faces</a></li>
+                            <li><a id="showToolbar" >Show Toolbar</a></li>
                           </ul>
                       </div>
 
-                        <button style="float:left" class="btn  btn-primary" id="showToolbar">Show Toolbar</button>
-                        <button style="float:right; margin-left:10px;" class="btn  btn-danger" id="abort">Abort</button>
-                        <button style="float:right; margin-left:10px;" class="btn  btn-info" id="update">Update</button>
-                    </div>
-            </div>
+                      <input  style="float:left; " id ="instantUpdate" checked data-toggle="toggle" type="checkbox" data-on="Update on" data-off="Update off">
 
+                      <button style="float:left; " class="btn  btn-primary" id="update">Update</button>
+                      <button style="float:left; " class="btn  btn-danger" id="abort">Abort</button>
+                    </div>
+                  </div>
+            </div>
           </div>
     </div>
-
-
 
     <div class="row">
         <div class="col-sm-12" >
@@ -122,6 +122,7 @@
           </p>
         </div>
     </div>
+
   </div>
 
 </div>

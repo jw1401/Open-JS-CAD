@@ -557,17 +557,17 @@ OpenJsCad.Processor.prototype =
         //element.id = "updateButton";
         //element.className="btn btn-default";
 
-        this.updateButton = document.querySelector("#update")
+        this.updateButton = document.querySelector("#update");
         this.updateButton.onclick = function(e) {that.rebuildSolid();};
         //element.style="float:right";
         //this.statusdiv.appendChild(element);
 
-        var instantUpdateCheckbox = document.createElement("input");
-        instantUpdateCheckbox.type = "checkbox";
-        instantUpdateCheckbox.id = "instantUpdate";
-        instantUpdateCheckbox.checked = true;
-        this.statusdiv.appendChild(instantUpdateCheckbox);
-
+        this.instantUpdateCheckbox = document.querySelector("#instantUpdate");
+        //instantUpdateCheckbox.type = "checkbox";
+        //instantUpdateCheckbox.id = "instantUpdate";
+        this.instantUpdateCheckbox.checked = true;
+        this.statusdiv.appendChild(this.instantUpdateCheckbox);
+/*
         element = document.getElementById("instantUpdateLabel");
         if (element === null)
         {
@@ -577,7 +577,7 @@ OpenJsCad.Processor.prototype =
         }
         element.setAttribute("for",instantUpdateCheckbox.id);
 
-        this.statusdiv.appendChild(element);
+        this.statusdiv.appendChild(element);*/
 
         // create ParametersTable which is filled by createParamControls
         this.parameterstable = document.createElement("table");
@@ -710,14 +710,14 @@ OpenJsCad.Processor.prototype =
             var button = document.createElement("button");
             button.setAttribute("value",format);
             button.innerHTML = info.displayName;
-            button.className="btn btn-success";
+            button.className="btn btn-info";
             button.onclick = function(e) {
               that.currentFormat = button.value.toString();
               console.log(that.currentFormat);
               that.generateOutputFile();};
 
             this.statusbuttons.appendChild(button);
-            this.statusbuttons.appendChild(document.createTextNode(" "));
+            //this.statusbuttons.appendChild(document.createTextNode(" "));
 
 
         });
@@ -1289,9 +1289,9 @@ OpenJsCad.Processor.prototype =
                 stla:  { displayName: "STL (ASCII)", extension: "stl", mimetype: "application/sla", convertCSG: true, convertCAG: false },
                 stlb:  { displayName: "STL (Binary)", extension: "stl", mimetype: "application/sla", convertCSG: true, convertCAG: false },
                 amf:   { displayName: "AMF (experimental)", extension: "amf", mimetype: "application/amf+xml", convertCSG: true, convertCAG: false },
-                x3d:   { displayName: "X3D", extension: "x3d", mimetype: "model/x3d+xml", convertCSG: true, convertCAG: false },
+              //  x3d:   { displayName: "X3D", extension: "x3d", mimetype: "model/x3d+xml", convertCSG: true, convertCAG: false },
                 dxf:   { displayName: "DXF", extension: "dxf", mimetype: "application/dxf", convertCSG: false, convertCAG: true },
-                jscad: { displayName: "JSCAD", extension: "jscad", mimetype: "application/javascript", convertCSG: true, convertCAG: true },
+              //  jscad: { displayName: "JSCAD", extension: "jscad", mimetype: "application/javascript", convertCSG: true, convertCAG: true },
                 svg:   { displayName: "SVG", extension: "svg", mimetype: "image/svg+xml", convertCSG: false, convertCAG: true },
             };
         }

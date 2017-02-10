@@ -43,6 +43,8 @@ function loadProcessor()
 
       resize();
       $(window).resize(function(){resize();});
+
+      $('#parametersdiv').perfectScrollbar();
 }
 
 
