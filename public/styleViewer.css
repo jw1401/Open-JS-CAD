@@ -6,10 +6,16 @@
 
 #cadViewer
 {
+
     position:relative;
     top:10px;
+<<<<<<< Updated upstream
     width: 1100px;
     height: auto;
+=======
+    width: 80%;
+    height: 500px;
+>>>>>>> Stashed changes
     display: block;
     margin-left:auto;
     margin-right:auto;
@@ -17,7 +23,8 @@
 
 #viewerContext
 {
-    position: relative;;
+    position: relative;
+
     margin: 0px;             /* not inherited */
     padding: 0px;            /* not inherited */
     /* ensure that the canvas uses the whole width and height of the document */
@@ -70,7 +77,7 @@
     position:relative;
     top:10px;
     width:100%;
-    height: auto;
+    height: 100%;
     display: block;
     margin-left:auto;
     margin-right:auto;
