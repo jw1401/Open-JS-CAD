@@ -14,12 +14,13 @@
     <script src="Viewer/jquery/jquery-3.1.1.min.js"></script>
     <script src="Viewer/jquery/jquery-ui.min.js"></script>
     <script src="Viewer/jquery/js/perfect-scrollbar.jquery.js"></script>
-    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
 
     <!--load stylesheets-->
     <!--<link rel="stylesheet" href="normalize.css">-->
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="styleViewer.css" rel="stylesheet" />
@@ -48,6 +49,7 @@
     <!--THREE js wrapper Library for openjscad-->
     <script src="Viewer/js/threecsg.js"></script>
 
+
 </head>
 
 <body onload="loadProcessor()">
@@ -59,17 +61,15 @@
   <div class = "container-fluid">
 
     <div class="row">
-      <div class="col-sm-12" >
+      <div class="col-sm-12" style="padding:5px">
         <h1>Small Example</h1>
-        <p style="text-align:justify;font-size:16px">
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
 
-        </p>
       </div>
     </div>
 
     <!-- The Cad Page-->
     <div class="row">
+
         <div id="columnBig" class="col-sm-8" style="padding:5px;">
           <div  id="draggable-update-div" class="panel-group" style="width:250px;z-index:999;position:absolute;">
               <div class="panel panel-default">
@@ -78,6 +78,7 @@
                 </div>
               </div>
           </div>
+
           <div oncontextmenu="return false;" id="viewerContext"></div>
         </div>
 
@@ -87,6 +88,7 @@
             </div>
           </div>
         </div>
+
     </div>
 
     <div class="row">
@@ -96,7 +98,7 @@
                       <div id="xyz">
                       <div class="dropdown" style="float:left">
                         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                          <span class="glyphicon glyphicon-cog">&nbsp</span><span class="caret"></span></button>
+                          <span class="glyphicon glyphicon-cog"></span>&nbsp<span class="caret"></span></button>
                           <ul class="dropdown-menu">
                             <li><a id="toggleLines" >Toggle Lines</a></li>
                             <li><a id="toggleFaces" >Toggle Faces</a></li>
@@ -115,8 +117,8 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-12" >
-          <h1>Small Example</h1>
+        <div class="col-sm-12" style="padding:5px">
+          <h3>Summary</h3>
           <p style="text-align:justify;font-size:16px">
               Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
           </p>
@@ -127,6 +129,8 @@
 
 </div>
 
+
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 </body>
 
 </html>

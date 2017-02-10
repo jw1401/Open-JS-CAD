@@ -1286,9 +1286,9 @@ OpenJsCad.Processor.prototype =
 
             this.formats = {
 
-                stla:  { displayName: "STL (ASCII)", extension: "stl", mimetype: "application/sla", convertCSG: true, convertCAG: false },
-                stlb:  { displayName: "STL (Binary)", extension: "stl", mimetype: "application/sla", convertCSG: true, convertCAG: false },
-                amf:   { displayName: "AMF (experimental)", extension: "amf", mimetype: "application/amf+xml", convertCSG: true, convertCAG: false },
+                stla:  { displayName: "STL ASCII", extension: "stl", mimetype: "application/sla", convertCSG: true, convertCAG: false },
+                stlb:  { displayName: "STL Binary", extension: "stl", mimetype: "application/sla", convertCSG: true, convertCAG: false },
+                amf:   { displayName: "AMF", extension: "amf", mimetype: "application/amf+xml", convertCSG: true, convertCAG: false },
               //  x3d:   { displayName: "X3D", extension: "x3d", mimetype: "model/x3d+xml", convertCSG: true, convertCAG: false },
                 dxf:   { displayName: "DXF", extension: "dxf", mimetype: "application/dxf", convertCSG: false, convertCAG: true },
               //  jscad: { displayName: "JSCAD", extension: "jscad", mimetype: "application/javascript", convertCSG: true, convertCAG: true },

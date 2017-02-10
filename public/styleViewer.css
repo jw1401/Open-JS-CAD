@@ -2,15 +2,12 @@
  * styleViewer.css
  */
 
-
-
 #cadViewer
 {
-
     position:relative;
     top:10px;
-    width: 1100px;
-    height: 500px;
+    width: 1000px;
+    height: 450px;
     display: block;
     margin-left:auto;
     margin-right:auto;
@@ -19,7 +16,7 @@
 #viewerContext
 {
     position: relative;
-
+    display: block;
     margin: 0px;             /* not inherited */
     padding: 0px;            /* not inherited */
     /* ensure that the canvas uses the whole width and height of the document */
@@ -28,15 +25,17 @@
     height:450px;
     border: thin solid lightgray;
     border-radius: 2px;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;
+    /*box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;*/
 }
 
-@media screen and (max-width: 1120px)
+
+
+@media screen and (max-width: 1020px)
 {
   #viewerContext
   {
       width:100%;
-      height:300px;
+      height:400px;
   }
 
   #draggable-update-div{display: none};
@@ -47,7 +46,7 @@
   {
     position:relative;
     top:10px;
-    width:720px;
+    width:100%;
     height: auto;
     display: block;
     margin-left:auto;
@@ -55,7 +54,7 @@
   }
 }
 
-@media screen and (max-width: 740px)
+@media screen and (max-width: 640px)
 {
   #viewerContext
   {
@@ -72,7 +71,7 @@
     position:relative;
     top:10px;
     width:100%;
-    height: 100%;
+    height: auto;
     display: block;
     margin-left:auto;
     margin-right:auto;
@@ -102,7 +101,7 @@ canvas
   width:100%;
   height:100%;
   overflow: hidden;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;
+  /*box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;*/
 }
 
 #parametersdiv
@@ -123,11 +122,12 @@ canvas
     margin-bottom: 5px;
     vertical-align:middle;
     text-align: left;
-    font-size: 0.8em;
+    font-size: 14px;
     font-weight: normal;
     border:  0px solid green;
     width: 100%;
     height:auto;
+    color:gray;
 }
 
 #parametersdiv th
@@ -142,21 +142,23 @@ canvas
     width: 100%;
     border-radius: 2px !important;
     border: 0px solid black;
-    height:25px;
+
 }
 
 #parametersdiv th.caption
 {
     text-decoration: none;
-    font-size:14px;
+    font-size:16px;
     color:white;
+    height:30px;
+
 }
 
 #parametersdiv td.caption
 {
     text-align: left;
     font-weight: normal;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: normal;
 }
 
@@ -165,17 +167,19 @@ canvas
     margin:  0px; /* not inherited */
     border:  0px solid black; /* not inherited */
     padding: 5px; /* not inherited */
+    padding-top: 7px;
+    padding-bottom: 7px;
     vertical-align:middle;
 }
 
 #parametersdiv textarea, #parametersdiv select
 {
-    font-size: 12px;
+    font-size: 14px;
     background: transparent;
     border: thin solid lightgrey;
     vertical-align:middle;
     height:30px;
-    color:black;
+    color:gray;
     margin: 0px;
     width:100%;
     -webkit-appearance: none;
@@ -204,7 +208,7 @@ canvas
     border: none;
     vertical-align:middle;
     height:25px;
-    color:black;
+    color:gray;
     margin: 0px;
     width: 88%;
 
@@ -212,12 +216,12 @@ canvas
 
 #parametersdiv input[type="number"]
 {
-    font-size: 12px;
+    font-size: 14px;
     background: transparent;
     border: thin solid lightgrey;
     vertical-align:middle;
-    height:25px;
-    color:black;
+    height:30px;
+    color:gray;
     margin: 0px;
     width: 100%;
     padding-left: 2px
@@ -238,17 +242,17 @@ canvas
     margin-bottom: 0px;
 }
 
-/*Update Div Region*/
+/*Update Div Region
 #updatediv
 {
 
 
-}
+}*/
 
 
 
 
-
+/*
 #updatediv label
 {
     color:gray;
@@ -261,7 +265,7 @@ canvas
     vertical-align: middle;
     margin: 0px 0 0;
     margin-left:5px;
-}
+}*/
 
 #statusdiv
 {
@@ -308,9 +312,10 @@ canvas
 
 #tail
 {
-    border: thin solid lightgray;
+    border: none;
+    margin: 0px;
     background: white;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;
+    /*box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;*/
     border-radius: 2px;
 }
 
