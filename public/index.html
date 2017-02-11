@@ -14,14 +14,13 @@
     <script src="Viewer/jquery/jquery-3.1.1.min.js"></script>
     <script src="Viewer/jquery/jquery-ui.min.js"></script>
     <script src="Viewer/jquery/js/perfect-scrollbar.jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
 
     <!--load stylesheets-->
     <!--<link rel="stylesheet" href="normalize.css">-->
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="styleViewer.css" rel="stylesheet" />
     <link href="Viewer/jquery/css/perfect-scrollbar.css" rel="stylesheet">
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
@@ -39,11 +38,8 @@
     <script src="Viewer/js/ui-worker.js" charset="utf-8"></script>
     <script src="Viewer/js/worker-conversion.js" charset="utf-8"></script>
 
-
     <script src="Viewer/js/openscad.js?0.5.2"></script>
     <script src="Viewer/js/openscad-openjscad-translator.js"></script>
-
-
 
     <!--load THREE js-->
     <script src="Viewer/lib/three.min.js"></script>
@@ -55,13 +51,9 @@
 
     <!--THREE js wrapper Library for openjscad-->
     <script src="Viewer/js/threecsg.js"></script>
-
-
 </head>
 
 <body onload="loadProcessor()">
-
-
 
 <div id="cadViewer">
 
@@ -70,7 +62,6 @@
     <div class="row">
       <div class="col-sm-12" style="padding:5px">
         <h1>Small Example</h1>
-
       </div>
     </div>
 
@@ -78,11 +69,8 @@
     <div class="row">
 
         <div id="columnBig" class="col-sm-8" style="padding:5px;">
-          <div  id="draggable-update-div" class="panel-group" style="width:250px;z-index:999;position:absolute;">
-              <div class="panel panel-default">
-                <div id="updatediv" class="panel-body" style="text-align:center">
-
-                </div>
+              <div  id="draggable-update-div" style="width:auto;z-index:999;position:absolute;">
+                <div id="updatediv"  style="text-align:left">
               </div>
           </div>
 
@@ -109,7 +97,7 @@
                           <ul class="dropdown-menu">
                             <li><a id="toggleLines" >Toggle Lines</a></li>
                             <li><a id="toggleFaces" >Toggle Faces</a></li>
-                            <li><a id="showToolbar" >Show Toolbar</a></li>
+                            <li><a id="showToolbar" >Show Info</a></li>
                           </ul>
                       </div>
 
@@ -136,8 +124,6 @@
 
 </div>
 
-
-<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 </body>
 
 </html>

@@ -19,7 +19,7 @@ OpenJsCadViewer.Viewer = function(containerElm, size, options)
     // fg and bg colors
 
     var defaultBgColor = [0.9, 0.9, 0.9];
-    var defaultMeshColor = [1, 0, 0];
+    var defaultMeshColor = [0, 0, 1];
     var drawAxes = true;
     var axLength = 110;
     var gridLength = 100;

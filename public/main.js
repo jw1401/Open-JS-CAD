@@ -1,7 +1,7 @@
 var gProcessor = null;        // required by OpenJScad.org
 
-//var gComponents = [ { file: '../examples/box.jscad' } ];
-var gComponents = [ { file: '../examples/frog-OwenCollins.stl' } ];
+var gComponents = [ { file: '../examples/box.jscad' },
+                    { file: '../examples/frog-OwenCollins.stl' } ];
 
 function loadProcessor()
 {

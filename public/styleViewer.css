@@ -38,7 +38,7 @@
       height:400px;
   }
 
-  #draggable-update-div{display: none};
+
 
   body{}
 
@@ -62,7 +62,7 @@
       height:300px;
   }
 
-  #draggable-update-div{display: none};
+
 
   body{}
 
@@ -136,7 +136,7 @@ canvas
     margin-bottom: 10px;
     border:  0px solid red; /* not inherited */
     padding: 5px; /* not inherited */
-    background-color:dodgerblue;
+    background-color:gray;/*#337AB7;/*dodgerblue;*/
     font-weight: normal;
     text-align:center;
     width: 100%;
@@ -242,12 +242,15 @@ canvas
     margin-bottom: 0px;
 }
 
-/*Update Div Region
+/*Update Div Region*/
 #updatediv
 {
+  font-size: 10px;
+  text-align: left;
+  margin: 4px;
 
 
-}*/
+}
 
 
 
@@ -270,6 +273,7 @@ canvas
 #statusdiv
 {
     padding:0px;
+    margin: -5px;
 }
 
 #statusbuttons
@@ -278,7 +282,7 @@ canvas
   margin-left: 0px;
 }
 .btn{
-
+  border-radius: 2px;
   margin:5px;
 }
 #statusdiv  select
@@ -302,10 +306,8 @@ canvas
 #statusspan
 {
     float:right;
-    font-size:14px;
-
-    margin-top: 2px;
-    width:100%
+    font-size:10px;
+    width:auto;
 }
 
 
@@ -322,6 +324,6 @@ canvas
 #busy
 {
    vertical-align: middle;
-    height:30px;
+    height:15px;
 
 }
