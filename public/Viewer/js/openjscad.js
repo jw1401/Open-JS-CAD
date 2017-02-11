@@ -55,7 +55,7 @@ OpenJsCad.env = function()
   console.log(env);
 }
 
-/*
+
 ///////////////////////////////////////////////////////////////////////////////
 // this is a bit of a hack; doesn't properly supports urls that start with '/'
 // but does handle relative urls containing ../
@@ -98,7 +98,7 @@ OpenJsCad.makeAbsoluteUrl = function(url, baseurl)
     }
   }
   return url;
-};*/
+};
 
 OpenJsCad.isChrome = function()
 {
@@ -591,7 +591,7 @@ OpenJsCad.Processor.prototype =
         this.clearViewer();
     },
 
-    /*
+
     getFilenameForRenderedObject: function()
     {
         var filename = this.filename;
@@ -611,7 +611,7 @@ OpenJsCad.Processor.prototype =
             }
         }
         return filename;
-    },*/
+    },
 
     // sets the current Objects to display, updates the view, the Formats and the downloadLinkTextForCurrentObject
     //

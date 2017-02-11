@@ -28,7 +28,7 @@ OpenJsCad.createJscadFunction = function(fullurl, script, callback)
   source += '\n';
   source += "return main(params);\n";
 
-  //console.log("SOURCE: "+source);
+  console.log("SOURCE: "+source);
 
   var f = new Function("params", source);
   return f;
