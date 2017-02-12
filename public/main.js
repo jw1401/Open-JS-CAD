@@ -19,21 +19,22 @@ function loadProcessor()
       OpenJsCad.env();
       OpenJsCad.AlertUserOfUncaughtExceptions();
 
-      $('#toggleLines').on("click", function(){
+      $('#toggleLines').on("click", function()
+      {
         //console.log("toggle-lines");
         gProcessor.toggleDrawOption('lines');
-
       });
 
-      $('#toggleFaces').on("click", function(){
+      $('#toggleFaces').on("click", function()
+      {
         //console.log("toggleFaces");
-
         gProcessor.toggleDrawOption('faces');
       });
 
       $('#draggable-update-div').draggable();
 
-      $('#showToolbar').on("click",function(){
+      $('#showToolbar').on("click",function()
+      {
         //console.log($('#updatediv').is(':visible'));
         if($('#draggable-update-div').is(':visible'))
         {
@@ -88,7 +89,5 @@ function loadJSCAD(choice)
 function resize()
 {
   var height = $('#columnBig').height();
-  //console.log(height);
   $('#columnSmall').height(height);
-  //console.log($('#columnSmall').height());
 }

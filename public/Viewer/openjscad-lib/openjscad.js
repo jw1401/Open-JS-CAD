@@ -170,7 +170,8 @@ OpenJsCad.isSafari = function()
   return /Version\/[\d\.]+.*Safari/.test(window.navigator.userAgent); // FIXME WWW says don't use this
 }
 
-
+// returns Object for creating Object urls
+//
 OpenJsCad.getWindowURL = function()
 {
   if(window.URL) return window.URL;
@@ -178,7 +179,8 @@ OpenJsCad.getWindowURL = function()
   else throw new Error("Your browser doesn't support window.URL");
 };
 
-
+// creates an Object URL based on blob
+//
 OpenJsCad.textToBlobUrl = function(txt)
 {
   var windowURL=OpenJsCad.getWindowURL();
@@ -188,6 +190,8 @@ OpenJsCad.textToBlobUrl = function(txt)
   return blobURL;
 };
 
+// tell the browser not to keep the reference to the File any longer
+//
 OpenJsCad.revokeBlobUrl = function(url)
 {
   if(window.URL) window.URL.revokeObjectURL(url);
@@ -195,6 +199,8 @@ OpenJsCad.revokeBlobUrl = function(url)
   else throw new Error("Your browser doesn't support window.URL");
 };
 
+// throws File API Error ????
+//
 OpenJsCad.FileSystemApiErrorHandler = function(fileError, operation)
 {
   var errormap =
@@ -225,6 +231,7 @@ OpenJsCad.FileSystemApiErrorHandler = function(fileError, operation)
   }
 
   var errtxt = "FileSystem API error: "+operation+" returned error "+errname;
+  OpenJsCad.log(errtxt);
   throw new Error(errtxt);
 };
 
@@ -232,8 +239,8 @@ OpenJsCad.FileSystemApiErrorHandler = function(fileError, operation)
 //
 OpenJsCad.AlertUserOfUncaughtExceptions = function()
 {
-  window.onerror = function(message, url, line) {
-
+  window.onerror = function(message, url, line)
+  {
     var msg = "uncaught exception";
 
     switch (arguments.length)
@@ -268,7 +275,8 @@ OpenJsCad.AlertUserOfUncaughtExceptions = function()
     }
       else
     {
-      console.log(msg);
+      OpenJsCad.log(msg);
+      //console.log(msg);
     }
     return false;
   };
@@ -652,7 +660,7 @@ OpenJsCad.Processor.prototype =
         this.clearViewer();
     },
 
-
+/*
     getFilenameForRenderedObject: function()
     {
         var filename = this.filename;
@@ -672,7 +680,7 @@ OpenJsCad.Processor.prototype =
             }
         }
         return filename;
-    },
+    },*/
 
     // sets the current Objects to display, updates the view, the Formats and the downloadLinkTextForCurrentObject
     //
