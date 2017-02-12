@@ -66,7 +66,7 @@ function loadJSCAD(choice)
 
         if(filepath.match(/\.jscad$/i)||filepath.match(/\.js$/i))
         {
-          gProcessor.setOpenJsCadPath('Viewer/js/');// set for library path
+          gProcessor.setOpenJsCadPath('Viewer/openjscad-lib/');// set for library path
           gProcessor.setStatus("Processing "+filepath+" <img id=busy src='Viewer/imgs/busy.gif'>");
           gProcessor.setJsCad(source,filepath);
         }
@@ -75,7 +75,7 @@ function loadJSCAD(choice)
           var worker = OpenJsCad.createConversionWorker();
 
           gProcessor.setStatus("Converting "+filepath+" <img id=busy src='Viewer/imgs/busy.gif'>");
-          var u = gProcessor.baseurl +'Viewer/js/';
+          var u = gProcessor.baseurl +'Viewer/openjscad-lib/';
 
           //note: cache: false is set to allow evaluation of 'include' statements
           worker.postMessage({baseurl: u, source: source, filename: filepath, cache: false});

@@ -1,8 +1,9 @@
-// == openjscad.js, originally written by Joost Nieuwenhuijse (MIT License)
-//   few adjustments by Rene K. Mueller <spiritdude@gmail.com> for OpenJSCAD.org
-//   adapted by jw1401 as an Customiozation Engine for 3D Printing
 //
-// History:
+// == openjscad.js, originally written by Joost Nieuwenhuijse (MIT License)
+//    few adjustments by Rene K. Mueller <spiritdude@gmail.com> for OpenJSCAD.org
+//    adapted by jw1401
+//
+//    History:
 //
 
 (function(module)
@@ -12,7 +13,7 @@ var OpenJsCad = function() { };
 
 module.OpenJsCad = OpenJsCad;
 
-OpenJsCad.version = '0.5.2 (2016/10/01)';
+OpenJsCad.version = 'jw1401.0.5.2 (2017/02/12)';
 
 //Logging Function for debugging
 //
@@ -37,6 +38,8 @@ OpenJsCad.log = function(txt)
   else throw new Error("Cannot log");
 };
 
+// gets the running Environment
+//
 OpenJsCad.env = function()
 {
   var env = "OpenJSCAD "+OpenJsCad.version;
@@ -56,7 +59,7 @@ OpenJsCad.env = function()
 }
 
 
-///////////////////////////////////////////////////////////////////////////////
+/*//////////////////////////////////////////////////////////////////////////////
 // this is a bit of a hack; doesn't properly supports urls that start with '/'
 // but does handle relative urls containing ../
 //
@@ -98,17 +101,75 @@ OpenJsCad.makeAbsoluteUrl = function(url, baseurl)
     }
   }
   return url;
+};*/
+
+
+// Create an worker (thread) for converting/importing various formats to JSCAD
+//
+// See openjscad-worker-import.js for the conversion process
+//
+OpenJsCad.createConversionWorker = function()
+{
+  var w = new Worker('Viewer/openjscad-lib/openjscad-worker-import.js');
+
+  // - save the converted source into the cache (gMemFs)
+  // - set the converted source into the processor (viewer)
+  w.onmessage = function(e)
+  {
+      if (e.data instanceof Object)
+      {
+        var data = e.data;
+        if ('filename' in data && 'source' in data)
+        {
+          //console.log("editor"+data.source+']');
+          //putSourceInEditor(data.source,data.filename);
+        }
+        if ('filename' in data && 'converted' in data)
+        {
+          //console.log("processor: "+data.filename+" ["+data.converted+']');
+          if ('cache' in data && data.cache == true)
+          {
+            saveScript(data.filename,data.converted);
+          }
+          gProcessor.setJsCad(data.converted,data.filename);
+        }
+      }
+    };
+  return w;
 };
 
+// Create a list of supported conversions
+//
+// See worker-conversion.js for the conversion process
+//
+OpenJsCad.conversionFormats =
+[
+  // 3D file formats
+  'amf',
+  'gcode',
+  'js',
+  'jscad',
+  'obj',
+  'scad',
+  'stl',
+  // 2D file formats
+  'svg',
+];
+
+// checks if is Chrome browser
+//
 OpenJsCad.isChrome = function()
 {
   return (window.navigator.userAgent.search("Chrome") >= 0);
 };
 
+// checks if is Safari Browser
+//
 OpenJsCad.isSafari = function()
 {
   return /Version\/[\d\.]+.*Safari/.test(window.navigator.userAgent); // FIXME WWW says don't use this
 }
+
 
 OpenJsCad.getWindowURL = function()
 {
@@ -300,8 +361,8 @@ OpenJsCad.Processor = function(containerdiv, viewerOptions, onchange)
   // the default options for processing
   this.processOpts =
   {
-    libraries: ['csg.js','formats.js','openjscad.js','openscad.js'],
-    openJsCadPath: 'Viewer/js/',
+    libraries: ['csg.js','csg-export-formats.js','openjscad.js','openscad.js'],
+    openJsCadPath: 'Viewer/openjscad-lib/',
     useAsync: true,
     useSync:  true,
   };

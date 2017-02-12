@@ -13,7 +13,7 @@
     <!--load jQuery-->
     <script src="Viewer/jquery/jquery-3.1.1.min.js"></script>
     <script src="Viewer/jquery/jquery-ui.min.js"></script>
-    <script src="Viewer/jquery/js/perfect-scrollbar.jquery.js"></script>
+    <script src="Viewer/jquery/scrollbar/perfect-scrollbar.jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
@@ -22,35 +22,35 @@
     <!--<link rel="stylesheet" href="normalize.css">-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="styleViewer.css" rel="stylesheet" />
-    <link href="Viewer/jquery/css/perfect-scrollbar.css" rel="stylesheet">
+    <link href="Viewer/jquery/scrollbar/perfect-scrollbar.min.css" rel="stylesheet">
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
 
     <!--load openjscad-->
-    <script src="Viewer/js/csg.js?0.5.2"></script>
-    <script src="Viewer/js/formats.js?0.5.2"></script>
+    <script src="Viewer/openjscad-lib/csg.js?0.5.2"></script>
+    <script src="Viewer/openjscad-lib/csg-export-formats.js"></script>
 
-    <script src="Viewer/js/openjscad.js?0.5.2"></script>
-    <script src="Viewer/js/openjscadViewer.js?0.5.2"></script>
+    <script src="Viewer/openjscad-lib/openjscad.js?0.5.2"></script>
+    <script src="Viewer/openjscad-lib/openjscadViewer.js?0.5.2"></script>
 
-    <script src="Viewer/js/jscad-worker.js?0.5.2" charset="utf-8"></script>
-    <script src="Viewer/js/jscad-function.js?0.5.2" charset="utf-8"></script>
-    <script src="Viewer/js/ui-worker.js" charset="utf-8"></script>
-    <script src="Viewer/js/worker-conversion.js" charset="utf-8"></script>
+    <script src="Viewer/openjscad-lib/openjscad-worker.js?0.5.2" charset="utf-8"></script>
+    <script src="Viewer/openjscad-lib/openjscad-function.js?0.5.2" charset="utf-8"></script>
 
-    <script src="Viewer/js/openscad.js?0.5.2"></script>
-    <script src="Viewer/js/openscad-openjscad-translator.js"></script>
+    <script src="Viewer/openjscad-lib/openjscad-worker-import.js" charset="utf-8"></script>
+
+    <script src="Viewer/openjscad-lib/openscad.js?0.5.2"></script>
+    <script src="Viewer/openjscad-lib/openscad-openjscad-translator.js"></script>
 
     <!--load THREE js-->
-    <script src="Viewer/lib/three.min.js"></script>
-    <script src="Viewer/lib/orbitcontrols.js"></script>
+    <script src="Viewer/renderer-lib/three.min.js"></script>
+    <script src="Viewer/renderer-lib/orbitcontrols.js"></script>
 
     <!-- fallback for THREE js if no WebGL -->
-    <script src="Viewer/lib/projector.js"></script>
-    <script src="Viewer/lib/canvasrenderer.js"></script>
+    <script src="Viewer/renderer-lib/projector.js"></script>
+    <script src="Viewer/renderer-lib/canvasrenderer.js"></script>
 
     <!--THREE js wrapper Library for openjscad-->
-    <script src="Viewer/js/threecsg.js"></script>
+    <script src="Viewer/openjscad-lib/threecsg.js"></script>
 </head>
 
 <body onload="loadProcessor()">
