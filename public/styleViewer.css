@@ -29,6 +29,16 @@
     /*box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;*/
 }
 
+#columnBig{
+
+  padding-right: 5px;
+}
+
+#columnSmall{
+
+  padding-left: 5px;
+}
+
 canvas
 {
     margin: 0px;            /* not inherited */
@@ -55,9 +65,17 @@ canvas
     width:100%;
     height: auto;
   }
+  #columnSmall
+  {
+    padding:5px;
+  }
+  #columnBig{
+
+    padding:5px;
+  }
 }
 
-@media screen and (max-width: 640px)
+@media screen and (max-width: 760px)
 {
   #viewerContext
   {
@@ -65,6 +83,15 @@ canvas
   }
 
   body{}
+
+    #columnSmall
+    {
+      padding:5px;
+    }
+    #columnBig{
+
+      padding:5px;
+    }
 }
 
 
@@ -248,6 +275,7 @@ canvas
 {
     border: none;
     margin: 0px;
+    margin-top:10px;
     background: white;
     /*box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;*/
     border-radius: 2px;
