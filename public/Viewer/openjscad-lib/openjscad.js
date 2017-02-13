@@ -490,7 +490,7 @@ OpenJsCad.Processor.prototype =
     //    --viewerdiv
     //    --instances the OpenJsCadViewer which can be referenced by this.viewer in here
     //    --updatediv
-    //    --statusdiv
+    //    --optionsdiv
     //    --parametersdiv
     //    --ErrorDiv
     //
@@ -498,7 +498,7 @@ OpenJsCad.Processor.prototype =
     {
         var that = this;   // for event handlers
 
-        // removes all childs
+        // removes all childs; containerdiv is the #viewerContext
         while(this.containerdiv.children.length > 0)
         {
             this.containerdiv.removeChild(this.containerdiv.firstChild);
@@ -511,6 +511,7 @@ OpenJsCad.Processor.prototype =
         viewerdiv.style.height = '100%';
         this.containerdiv.appendChild(viewerdiv);
 
+
         // creates the Viewer and is assigned to viewerdiv
         try
         {
@@ -521,82 +522,58 @@ OpenJsCad.Processor.prototype =
             viewerdiv.innerHTML = "<b><br><br>Error: " + e.toString() + "</b><br><br>A browser with support for WebGL is required";
         }
 
+
         // creates the ErrorDiv
-        this.errordiv = this.containerdiv.parentElement.querySelector("div#errordiv");
+        this.errordiv = document.querySelector("div#errordiv");
         if (!this.errordiv)
         {
             this.errordiv = document.createElement("div");
             this.errordiv.id = 'errordiv';
+            this.errordiv.style="margin-top:5px";
             this.containerdiv.parentElement.appendChild(this.errordiv);
         }
-
         this.errorpre = document.createElement("pre");
         this.errordiv.appendChild(this.errorpre);
 
-        // creates the StatusDiv
-        this.statusdiv = document.querySelector("div#statusdiv");
 
-        /*
-        while (this.statusdiv.hasChildNodes())
-        {
-            this.statusdiv.removeChild(this.statusdiv.lastChild);
-        }*/
+        // creates the optionsdiv
+        this.optionsdiv = document.querySelector("#optionsdiv");
 
-        if (!this.statusdiv)
-        {
-            this.statusdiv = document.createElement("div");
-            this.statusdiv.id = "statusdiv";
-            this.containerdiv.parentElement.appendChild(this.statusdiv);
-        }
+        this.optionsdiv.innerHTML= '<div class="dropdown" style="float:left">'+
+                                    '<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">'+
+                                    '<span class="glyphicon glyphicon-cog"></span>&nbsp<span class="caret"></span></button>'+
+                                      '<ul class="dropdown-menu">'+
+                                        '<li><a id="toggleLines" >Toggle Lines</a></li>'+
+                                        '<li><a id="toggleFaces" >Toggle Faces</a></li>'+
+                                        '<li><a id="showToolbar" >Show Info</a></li>'+
+                                      '</ul>'+
+                                    '</div>'+
 
-        /*this.abortbutton = document.createElement("button");
-        this.abortbutton.className = "btn btn-danger";
-        this.abortbutton.innerHTML = "Abort";*/
+                                    '<input  id ="instantUpdate" checked data-toggle="toggle" type="checkbox" data-on="Auto" data-off="Manual">'+
+
+                                    '<button style="float:left; " class="btn  btn-primary" id="update">Update</button>'+
+                                    '<button style="float:left; " class="btn  btn-danger" id="abort">Abort</button>';
 
         this.abortbutton = document.querySelector("#abort");
         this.abortbutton.onclick = function(e) {that.abort();};
-        this.statusdiv.appendChild(this.abortbutton);
-        //this.statusdiv.parentElement.appendChild(document.createTextNode(" "));
 
-        this.statusspan = document.createElement("div");
-        this.statusspan.id = 'statusspan';
+        this.updateButton = document.querySelector("#update");
+        this.updateButton.onclick = function(e) {that.rebuildSolid();};
 
-        this.statusbuttons = document.createElement("div");
-        this.statusbuttons.id = 'statusbuttons';
+        this.instantUpdateCheckbox = document.querySelector("#instantUpdate");
+        this.instantUpdateCheckbox.checked = true;
 
-        //this.statusdiv.appendChild(this.statusspan);
-        this.statusdiv.appendChild(this.statusbuttons);
-
-
-
-        /*
-        this.formatDropdown = document.createElement("select");
-        this.formatDropdown.onchange = function(e) {
-
-            //that.currentFormat = that.formatDropdown.options[that.formatDropdown.selectedIndex].value;
-
-            that.updateDownloadLink();};
-        this.statusdiv.appendChild(this.formatDropdown);
-        this.statusdiv.appendChild(document.createTextNode(" "));
-
-        this.generateOutputFileButton = document.createElement("button");
-        this.generateOutputFileButton.className ="btn btn-warning";
-        this.generateOutputFileButton.onclick = function(e) {that.generateOutputFile();};
-        this.statusdiv.appendChild(this.generateOutputFileButton);
-        this.statusdiv.appendChild(document.createTextNode(" "));*/
+        this.downloadbuttons = document.createElement("div");
+        this.downloadbuttons.id = 'downloadbuttons';
+        this.optionsdiv.appendChild(this.downloadbuttons);
 
         this.downloadOutputFileLink = document.createElement("a");
         this.downloadOutputFileLink.className = "btn btn-warning"; // so we can css it
-        this.statusdiv.appendChild(this.downloadOutputFileLink);
-        this.statusdiv.appendChild(document.createTextNode(" "));
+        this.optionsdiv.appendChild(this.downloadOutputFileLink);
+
 
         // creates the ParametersDiv
-        this.parametersdiv = document.querySelector("div#parametersdiv");
-
-        /*while (this.parametersdiv.hasChildNodes())
-        {
-            this.parametersdiv.removeChild(this.parametersdiv.lastChild);
-        }*/
+        this.parametersdiv = document.querySelector("#parametersdiv");
 
         if (!this.parametersdiv)
         {
@@ -605,53 +582,19 @@ OpenJsCad.Processor.prototype =
             this.containerdiv.parentElement.appendChild(this.parametersdiv);
         }
 
-        // creates the UpdateDiv
-        this.updatediv = document.querySelector("div#updatediv");
-        this.updatediv.appendChild(this.statusspan);
-/*
-        while (this.updatediv.hasChildNodes())
-        {
-            this.updatediv.removeChild(this.updatediv.lastChild);
-        }
-
-        if (!this.updatediv)
-        {
-            this.updatediv = document.createElement("div");
-            this.updatediv.id = "updatediv";
-            this.containerdiv.parentElement.appendChild(this.updatediv);
-        }*/
-
-        //element = document.createElement("button");
-        //element.innerHTML = "Update";
-        //element.id = "updateButton";
-        //element.className="btn btn-default";
-
-        this.updateButton = document.querySelector("#update");
-        this.updateButton.onclick = function(e) {that.rebuildSolid();};
-        //element.style="float:right";
-        //this.statusdiv.appendChild(element);
-
-        this.instantUpdateCheckbox = document.querySelector("#instantUpdate");
-        //instantUpdateCheckbox.type = "checkbox";
-        //instantUpdateCheckbox.id = "instantUpdate";
-        this.instantUpdateCheckbox.checked = true;
-        this.statusdiv.appendChild(this.instantUpdateCheckbox);
-/*
-        element = document.getElementById("instantUpdateLabel");
-        if (element === null)
-        {
-            element = document.createElement("label");
-            element.innerHTML = "Instant Update";
-            element.id = "instantUpdateLabel";
-        }
-        element.setAttribute("for",instantUpdateCheckbox.id);
-
-        this.statusdiv.appendChild(element);*/
-
         // create ParametersTable which is filled by createParamControls
         this.parameterstable = document.createElement("table");
         this.parameterstable.className = "parameterstable";
         this.parametersdiv.appendChild(this.parameterstable);
+
+
+        // creates the StatusDiv
+        this.statusspan = document.createElement("div");
+        this.statusspan.id = 'statusspan';
+
+        this.statusdiv = document.querySelector("#statusdiv");
+        this.statusdiv.appendChild(this.statusspan);
+
 
         // shows the items depending on cases
         this.enableItems();
@@ -752,31 +695,19 @@ OpenJsCad.Processor.prototype =
     //
     updateFormats: function()
     {
-        /*while(this.formatDropdown.options.length > 0)
+        while (this.downloadbuttons.hasChildNodes())
         {
-            this.formatDropdown.options.remove(0);
-        }*/
-
-        while (this.statusbuttons.hasChildNodes())
-        {
-            this.statusbuttons.removeChild(this.statusbuttons.lastChild);
+            this.downloadbuttons.removeChild(this.downloadbuttons.lastChild);
         }
 
         var that = this;
-
         var formats = this.supportedFormatsForCurrentObjects();
 
         formats.forEach(function(format)
         {
-
             var info = that.formatInfo(format);
-
-            /* var option = document.createElement("option");
-            option.setAttribute("value", format);
-            option.appendChild(document.createTextNode(info.displayName));
-            that.formatDropdown.options.add(option);*/
-
             var button = document.createElement("button");
+
             button.setAttribute("value",format);
             button.innerHTML = info.displayName;
             button.className="btn btn-primary";
@@ -785,10 +716,7 @@ OpenJsCad.Processor.prototype =
               console.log(that.currentFormat);
               that.generateOutputFile();};
 
-            this.statusbuttons.appendChild(button);
-            //this.statusbuttons.appendChild(document.createTextNode(" "));
-
-
+            this.downloadbuttons.appendChild(button);
         });
     },
 
@@ -834,7 +762,7 @@ OpenJsCad.Processor.prototype =
         this.downloadOutputFileLink.style.display = this.hasOutputFile? "none":"none";
         this.parametersdiv.style.display = (this.paramControls.length > 0)? "inline-block":"none";     // was 'block'
         this.errordiv.style.display = this.hasError? "block":"none";
-        this.statusdiv.style.display = this.hasError? "none":"block";
+        this.optionsdiv.style.display = this.hasError? "none":"block";
     },
 
     // adds libraries to this.opts Object

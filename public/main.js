@@ -1,7 +1,9 @@
 var gProcessor = null;        // required by OpenJScad.org
 
 var gComponents = [ { file: '../examples/box.jscad' },
-                    { file: '../examples/frog-OwenCollins.stl' } ];
+                    { file: '../examples/frog-OwenCollins.stl' },
+                    { file: '../examples/celtic-knot-ring.jscad' }
+                  ];
 
 function loadProcessor()
 {
@@ -31,16 +33,16 @@ function loadProcessor()
         gProcessor.toggleDrawOption('faces');
       });
 
-      $('#draggable-update-div').draggable();
+      $('.draggable-status-div').draggable();
 
       $('#showToolbar').on("click",function()
       {
         //console.log($('#updatediv').is(':visible'));
-        if($('#draggable-update-div').is(':visible'))
+        if($('.draggable-status-div').is(':visible'))
         {
-          $('#draggable-update-div').hide();
+          $('.draggable-status-div').hide();
         }
-        else $('#draggable-update-div').show();
+        else $('.draggable-status-div').show();
       });
 
       resize();
