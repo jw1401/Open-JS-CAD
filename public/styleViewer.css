@@ -9,10 +9,16 @@
     position:relative;
     top:10px;
     width: 1000px;
-    height: 450px;
+    height: auto;
     display: block;
     margin-left:auto;
     margin-right:auto;
+}
+
+.header
+{
+    padding-bottom: 20px;
+    border-bottom: 1px solid #E5E5E5;
 }
 
 #viewerContext
@@ -29,14 +35,9 @@
     /*box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;*/
 }
 
-#columnBig{
-
-  padding-right: 5px;
-}
-
-#columnSmall{
-
-  padding-left: 5px;
+#columnBig
+{
+  padding-right: 0px;
 }
 
 canvas
@@ -51,7 +52,7 @@ canvas
     cursor: crosshair;      /* show that we can change orientation of view */
 }
 
-@media screen and (max-width: 1020px)
+@media screen and (max-width: 992px)
 {
   #viewerContext
   {
@@ -65,17 +66,10 @@ canvas
     width:100%;
     height: auto;
   }
-  #columnSmall
-  {
-    padding:5px;
-  }
-  #columnBig{
 
-    padding:5px;
-  }
 }
 
-@media screen and (max-width: 760px)
+@media screen and (max-width: 767px)
 {
   #viewerContext
   {
@@ -84,14 +78,15 @@ canvas
 
   body{}
 
-    #columnSmall
-    {
-      padding:5px;
-    }
-    #columnBig{
+  #columnBig
+  {
+    padding-right:15px;
+  }
 
-      padding:5px;
-    }
+  #pWrapper
+  {
+    margin-top: 10px;
+  }
 }
 
 
@@ -100,7 +95,7 @@ canvas
 #pWrapper
 {
   position:relative;
-  margin: 0px; /* not inherited */
+  /*margin: 0px;  not inherited */
   padding: 5px;
   border: thin solid lightgray;
   border-radius: 2px;
@@ -302,4 +297,5 @@ canvas
 {
   border-radius: 2px;
   margin:5px;
+
 }

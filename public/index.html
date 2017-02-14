@@ -14,16 +14,14 @@
     <script src="Viewer/jquery/jquery-3.1.1.min.js"></script>
     <script src="Viewer/jquery/jquery-ui.min.js"></script>
     <script src="Viewer/jquery/scrollbar/perfect-scrollbar.jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-
+    <script src="bootstrap/js/bootstrap.min.js"></script>
 
     <!--load stylesheets-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link href="styleViewer.css" rel="stylesheet" />
     <link href="Viewer/jquery/scrollbar/perfect-scrollbar.min.css" rel="stylesheet">
-    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-
+    <link href="bootstrap/bootstrap-toggle/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="bootstrap/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
 
     <!--load openjscad-->
     <script src="Viewer/openjscad-lib/csg.js?0.5.2"></script>
@@ -58,10 +56,35 @@
 
   <div class = "container-fluid">
 
+    <div class="header clearfix">
+            <nav style='margin-top:15px;'>
+              <!-- Split button -->
+              <div class="btn-group pull-right">
+                <button type="button" class="btn btn-info" style="margin:0px;">Models</button>
+                <button type="button" class="btn btn-info dropdown-toggle" style="margin:0px;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a href="#Box">Box</a></li>
+                  <li><a href="#Frog">Frog Stl</a></li>
+                  <li><a href="#Gear">Gear</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#Hook">Hook</a></li>
+                </ul>
+                </div>
+              </nav>
+            <h3 class="text-muted">OpenJsCad (adapted Version)</h3>
+      </div>
+
     <!-- Some Heading -->
     <div class="row">
       <div class="col-sm-12">
-        <h1>Small Openjscad Example</h1>
+        <h2>Parametized 3D solid modelling</h2>
+        <p style="text-align:justify;font-size:16px">
+            This work is based on OpenJsCad by joostn and Openjscad.org. OpenJsCad is a web based solid modeling tool similar to OpenSCAD. Javascript is used as solid modelling language which allows modelling with user editable Parameters. User edited parametric models can be exported to various formats like STL and DXF for further usage (e.g. 3D Printing). All code released under MIT license.
+        </p><br />
+        <h3>Small Examples</h3>
       </div>
     </div>
 
@@ -91,22 +114,10 @@
     <!--some Text Region-->
     <div class="row">
         <div class="col-sm-12">
-          <h3>Summary</h3>
-          <p style="text-align:justify;font-size:16px">
-              OpenJsCad is a web based 2D and 3D modeling tool similar to OpenSCAD. Javascript is used as solid modelling language and allows modelling with user editable Parameters. User edited parametric models can be exported to various formats like STL and DXF.
-              <br /><br />
-              Benefits:
-          </p>
-          <ul class="list-group">
-            <li class="list-group-item">Runs in your browser, no need to install any software.</li>
-            <li class="list-group-item">You can create parametric models with user editable parameters: parameters can be changed in the browser window,
-                without the need to edit the source script. See the Gears demo at the top of this page for example.</li>
-            <li class="list-group-item">JavaScript is an extremely flexible language, supporting dynamic arrays, object oriented programming, closures, anonymous functions and more</li>
-            <li class="list-group-item">Solids are stored in variables. This allows for example conditional cloning of objects, something which is nearly impossible in OpenSCAD.</li>
-            <li class="list-group-item">Properties and Connectors (see below) make it very easy to attach objects to each other at predetermined
-                points, even if you don't know the actual orientation or size.</li>
-            <li class="list-group-item">Extensive built in support for 2D and 3D math (classes for Vector2D, Vector3D, Plane, Line3D, Line2D)</li>
-          </ul>
+          <br />
+          <h3>Enjoy :-)</h3>
+
+
         </div>
     </div>
 

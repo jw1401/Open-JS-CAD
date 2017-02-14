@@ -1,9 +1,12 @@
 var gProcessor = null;        // required by OpenJScad.org
 
-var gComponents = [ { file: '../examples/box.jscad' },
-                    { file: '../examples/frog-OwenCollins.stl' },
-                    { file: '../examples/celtic-knot-ring.jscad' }
+var gComponents = [ { name:'Box', file: '../examples/box.jscad' },
+                    { name:'Frog', file: '../examples/frog-OwenCollins.stl' },
+                    { name:'Hook', file: '../examples/s-hook.jscad' },
+                    { name:'Gear', file: '../examples/gears.jscad'}
                   ];
+
+var hash="";
 
 function loadProcessor()
 {
@@ -49,8 +52,21 @@ function loadProcessor()
       $(window).resize(function(){resize();});
 
       $('#parametersdiv').perfectScrollbar();
+
+      $(window).on("hashchange", function(){
+        hash = location.hash.substr(1);
+        //console.log(hash);
+        var component = gComponents.findIndex(findComponent);
+        //console.log(component);
+        loadJSCAD(component);
+      });
+
 }
 
+function findComponent(component,hash)
+{
+  return component.name === window.location.hash.substr(1);
+}
 
 
 function loadJSCAD(choice)
