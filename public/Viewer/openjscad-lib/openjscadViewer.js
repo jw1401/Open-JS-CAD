@@ -18,7 +18,7 @@ OpenJsCadViewer.Viewer = function(containerElm, size, options)
     // config stuff
     // fg and bg colors
 
-    var defaultBgColor = [0.93, 0.93, 0.93];
+    var defaultBgColor = [0.9, 0.9, 0.9];
     var defaultMeshColor = [0, 0, 1];
     var drawAxes = true;
     var axLength = 110;
@@ -181,9 +181,6 @@ OpenJsCadViewer.Viewer.prototype =
         this.pauseRender_ = true;
         cancelAnimationFrame(this.requestID_);
     },
-
-
-
 
     drawAxes: function(axLen,gridLength) // draws grid and axes
     {

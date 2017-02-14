@@ -1,17 +1,7 @@
 // worker-conversion.js
 //
-// == OpenJSCAD.org, Copyright (c) 2013-2016, Licensed under MIT License
-//
 // Implementation of Conversion Worker Thread
 //
-// History:
-//   2016/10/15: 0.5.2: added conversion of JSON by Z3 Dev
-//   2016/06/27: 0.5.1: refactored AMF import and export by Z3 Dev
-//   2016/02/02: 0.4.0: GUI refactored, functionality split up into more files, mostly done by Z3 Dev
-
-// See ui-workers.js for helper functions
-// See index.js for how to create and start this thread
-
 // Handle the onmessage event which starts the thread
 // The "event" (message) is expected to have:
 //   data - an anonymous object for passing data
@@ -24,61 +14,88 @@
 //   converted - converted code for the processor (See logic below)
 // Depending on what's being converted, the two are different or the same.
 //
-// NOTE: Additional scripts (libraries) are imported only if necessary
-onmessage = function (e) {
+// Additional scripts (libraries) are imported only if necessary
+
+onmessage = function (e)
+{
   var r = { source: "", converted: "", filename: "", baseurl: "", cache: false };
-  if (e.data instanceof Object) {
+
+  if (e.data instanceof Object)
+  {
     var data = e.data;
-    if ('cache' in data) {
+
+    if ('cache' in data)
+    {
       r.cache = data.cache; // forward cache (gMemFS) controls
     }
-    if ('baseurl' in data) {
+
+    if ('baseurl' in data)
+    {
       r.baseurl = data.baseurl;
     }
-    if ('filename' in data) {
+
+    if ('filename' in data)
+    {
       r.filename = data.filename;
-      if ('source' in data) {
+
+      if ('source' in data)
+      {
         var e = data.filename.toLowerCase().match(/\.(\w+)$/i);
         e = RegExp.$1;
-        switch (e) {
+
+        switch (e)
+        {
           case 'amf':
-            importScripts(r.baseurl+'csg.js',r.baseurl+'openjscad.js',r.baseurl+'js/lib/sax-js-1.1.5/lib/sax.js',r.baseurl+'js/jscad-parseAMF.js');
+            importScripts(r.baseurl+'csg.js',r.baseurl+'openjscad.js',r.baseurl+'../sax-lib/sax-js-1.1.5/lib/sax.js',r.baseurl+'openjscad-parseAMF.js');
             r.source = r.converted = OpenJsCad.parseAMF(data.source,data.filename);
             break;
+
           case 'gcode':
             importScripts(r.baseurl+'csg.js',r.baseurl+'openjscad.js',r.baseurl+'openscad.js');
             r.source = r.converted = parseGCode(data.source,data.filename);
             break;
+
           case 'obj':
             importScripts(r.baseurl+'csg.js',r.baseurl+'openjscad.js',r.baseurl+'openscad.js');
             r.source = r.converted = parseOBJ(data.source,data.filename);
             break;
+
           case 'scad':
             importScripts(r.baseurl+'csg.js',r.baseurl+'openjscad.js',r.baseurl+'openscad.js',r.baseurl+'underscore.js',r.baseurl+'openscad-openjscad-translator.js');
             r.source = data.source;
-            if(!r.source.match(/^\/\/!OpenSCAD/i)) {
+
+            if(!r.source.match(/^\/\/!OpenSCAD/i))
+            {
                r.source = "//!OpenSCAD\n"+data.source;
             }
             r.converted = openscadOpenJscadParser.parse(r.source);
             break;
+
           case 'stl':
+
+            console.log('The Base URL: '+r.baseurl);
             importScripts(r.baseurl+'csg.js',r.baseurl+'openjscad.js',r.baseurl+'openscad.js');
             r.source = r.converted = parseSTL(data.source,data.filename);
             break;
+
           case 'js':
             r.source = r.converted = data.source;
             break;
+
           case 'jscad':
             r.source = r.converted = data.source;
             break;
+
           case 'svg':
-            importScripts(r.baseurl+'csg.js',r.baseurl+'openjscad.js',r.baseurl+'js/lib/sax-js-1.1.5/lib/sax.js',r.baseurl+'js/jscad-parseSVG.js');
+            importScripts(r.baseurl+'csg.js',r.baseurl+'openjscad.js',r.baseurl+'../sax-lib/sax-js-1.1.5/lib/sax.js',r.baseurl+'openjscad-parseSVG.js');
             r.source = r.converted = OpenJsCad.parseSVG(data.source,data.filename);
             break;
+
           case 'json':
-            importScripts(r.baseurl+'csg.js',r.baseurl+'openjscad.js',r.baseurl+'js/jscad-parseJSON.js');
+            importScripts(r.baseurl+'csg.js',r.baseurl+'openjscad.js',r.baseurl+'openjscad-parseJSON.js');
             r.source = r.converted = OpenJsCad.parseJSON(data.source,data.filename);
             break;
+
           default:
             r.source = r.converted = '// Invalid file type in conversion ('+e+')';
             break;
