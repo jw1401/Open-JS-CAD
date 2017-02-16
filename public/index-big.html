@@ -48,15 +48,23 @@
 
     <!--THREE js wrapper Library for openjscad-->
     <script src="Viewer/openjscad-lib/threecsg.js"></script>
+
+    <style>
+      .container-fluid { background:black; }
+      #columnBig { position:absolute; top:65px; left:0px; right:0px; bottom:-5px; }
+      #viewerContext {position:absolute;top:0px;left:0px;right:0px;bottom:0px;height:100%;border:none; }
+      #pWrapper{width:300px;height:500px;position:absolute;top:80px;right:13px;opacity:0.9}
+      #options{position:absolute;left:0px;right:0px;bottom:10px;}
+      #statusdiv{margin-top:-15px;margin-left:0px;}
+    </style>
+
 </head>
 
 <body style="overflow:hidden" onload="loadProcessor()">
 
+  <div class = "container-fluid" >
 
-
-  <div class = "container-fluid">
-
-    <div class="header clearfix">
+    <div class="header clearfix" >
             <nav style='margin-top:15px;'>
               <!-- Split button -->
               <div class="btn-group pull-right">
@@ -74,38 +82,34 @@
                 </ul>
                 </div>
               </nav>
-            <h3 class="text-muted">OpenJsCad Big</h3>
+            <h3 style="color:white" class="text-muted">OpenJsCad Big</h3>
       </div>
 
 
     <!-- The Cad Region-->
     <div class="row">
         <!-- The Viewer Canvas and the statusdiv-->
-        <div id="columnBig" class="col-sm-12" style="position:absolute;top:65px;left:0px;right:0px;bottom:-5px;">
+        <div id="columnBig" class="col-sm-12" >
 
-          <div oncontextmenu="return false;" id="viewerContext" style="position:absolute;top:0px;left:0px;right:0px;bottom:0px;height:100%;border:none;"></div>
+          <div oncontextmenu="return false;" id="viewerContext"></div>
         </div>
         <!-- The parametersdiv-->
-          <div id="pWrapper" style="width:300px;height:500px;position:absolute;top:80px;right:13px;">
+          <div id="pWrapper" >
             <div id="parametersdiv"></div>
           </div>
 
     </div>
     <!-- the optionsdiv Region-->
     <div class="row">
-          <div class="col-sm-12" style="position:absolute;left:0px;right:0px;bottom:10px;">
-            <div style="margin-top:-15px;margin-left:0px;"class ="draggable-status-div" id="statusdiv"></div>
+          <div id ="options" class="col-sm-12">
+            <div class ="draggable-status-div" id="statusdiv"></div>
             <div  id="tail" >
               <div id="optionsdiv"></div>
             </div>
           </div>
     </div>
 
-
-
   </div>
-
-
 
 </body>
 

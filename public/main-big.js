@@ -38,6 +38,7 @@ function loadProcessor()
 
       $('.draggable-status-div').draggable();
       $('#pWrapper').draggable();
+      //$('#pWrapper').resizable();
 
       $('#showToolbar').on("click",function()
       {

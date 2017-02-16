@@ -3,7 +3,8 @@ var gProcessor = null;        // required by OpenJScad.org
 var gComponents = [ { name:'Box', file: '../examples/box.jscad' },
                     { name:'Frog', file: '../examples/frog-OwenCollins.stl' },
                     { name:'Hook', file: '../examples/s-hook.jscad' },
-                    { name:'Gear', file: '../examples/gears.jscad'}
+                    { name:'Gear', file: '../examples/gears.jscad'},
+                    { name:'Test', file: '../examples/Test.jscad'},
                   ];
 
 var hash="";

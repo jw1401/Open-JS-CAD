@@ -539,7 +539,7 @@ OpenJsCad.Processor.prototype =
         // creates the optionsdiv
         this.optionsdiv = document.querySelector("#optionsdiv");
 
-        this.optionsdiv.innerHTML= '<div class="dropdown" style="float:left">'+
+        this.optionsdiv.innerHTML= '<div class="dropup" style="float:left">'+
                                     '<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">'+
                                     '<span class="glyphicon glyphicon-cog"></span>&nbsp<span class="caret"></span></button>'+
                                       '<ul class="dropdown-menu">'+
