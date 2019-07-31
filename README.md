@@ -1,4 +1,4 @@
-# OpenJsCadV2 adapted by jw1401
+# Open JS Cad Demo
 
 Original work by joostn and Openjscad.org
 
