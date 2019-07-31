@@ -6,4 +6,4 @@ Licensed under MIT License
 
 If you want to see it in action go to
 
-https://jw1401.github.io/OpenJsCadV2/public/index.html
+https://jw1401.github.io/Open-JS-CAD/public/index.html
